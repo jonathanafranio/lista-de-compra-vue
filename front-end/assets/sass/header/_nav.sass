@@ -1,0 +1,77 @@
+/* ======================================
+ *
+ NAV
+ *
+ ========================================
+@media screen and (min-width: 1024px)
+	#site-navigation
+		.box-nav
+			vertical-align: top
+			padding: 0
+			.menu-header-container
+				display: inline-block
+				vertical-align: top
+				margin: 0
+				padding: 0
+				ul
+					display: none
+					list-style-type: none
+				/*- first line -*/
+				> ul
+					display: inline-flex
+					align-items: flex-end
+					padding: 0
+					text-align: center
+					> li
+						padding: 0px 10px
+						border-bottom: 2px solid transparent
+						position: relative
+						font-size: 1.6rem
+						font-weight: 600
+						text-transform: uppercase
+						color: $light-main
+						text-align: center
+						&:last-child
+							padding-right: 0px
+						&:hover,
+						&.current_page_item
+							border-bottom-color: $light-main
+						a
+							display: block
+							color: inherit
+
+							img
+								display: block
+								margin: 0 auto
+								text-align: center
+						ul
+							min-width: 200px
+							margin-left: 0
+							padding: 10px
+							border: 1px solid $light-main
+							position: absolute
+							background-color: $main-color
+							top: 0
+							left: 100%
+							border-radius: 0px 10px 10px 10px
+							li
+								padding: 10px 5px
+								border-bottom: 1px solid #fff
+								font-weight: 400
+								text-transform: capitalize
+								text-align: left
+
+						> ul
+							margin-top: 2px
+							top: 100%
+							left: 0
+						&:hover
+							> ul
+								display: block
+
+@media screen and (max-width: 1023px)
+	#site-navigation
+		display: none
+/*- Menu toogle -*/
+.menu-toggle
+	display: none

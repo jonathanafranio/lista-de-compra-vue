@@ -1,0 +1,43 @@
+/* ======================================
+ *
+ FOOTER
+ *
+ ========================================
+ *# 1.0 Site footer
+ *# 1.1 Footer column
+ *# 2.0 Container copyright
+ *# 3.0 Media Queries
+ *--------------------------------------------------------------
+
+/* -------------------------------------------------------------
+ 1.0 Site footer
+ ------------------------------------------------------------- */
+.footer
+	display: block
+	width: 100%
+	padding-top: 20px
+	position: relative
+	color: $light-text
+	background-color: $bg-footer
+	a
+		color: $light-text
+
+	.ft-bottom
+		display: flex
+		width: 100%
+		justify-content: space-around
+		height: 30px
+		color: $light-text
+		font-size: 22px
+		text-align: center
+		font-weight: normal
+		text-transform: uppercase
+		background: $bg-footer
+		&__list
+			width: 5px
+			height: 100%
+			background: $light-text
+			background: linear-gradient(to bottom, rgba($light-text,0) 0%, rgba($light-text,0.6) 60%, rgba($light-text,1) 100%)
+			&.hide-mbl
+				@media screen and (max-width: 767px)
+					display: none

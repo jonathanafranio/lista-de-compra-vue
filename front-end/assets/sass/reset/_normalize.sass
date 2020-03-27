@@ -1,0 +1,409 @@
+/*--------------------------------------------------------------
+ *# Normalize
+ *--------------------------------------------------------------
+
+*
+	box-sizing: border-box
+
+html
+	font-size: 62.5%
+	font-family: $main-font
+	-webkit-text-size-adjust: 100%
+	-ms-text-size-adjust: 100%
+	max-width: 100%
+	overflow-x: hidden
+
+body
+	margin: 0
+	//font-size: 1.4rem
+	font-size: 16px
+	font-family: $main-font
+	color: $text-color
+	background: $bg-body
+	overflow-x: hidden
+
+#page
+	display: inline-block
+	width: 100%
+
+article, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary
+	display: block
+
+audio, canvas, progress, video
+	display: inline-block
+	vertical-align: baseline
+
+audio:not([controls])
+	display: none
+	height: 0
+
+[hidden], template
+	display: none
+
+a
+	background-color: transparent
+	text-decoration: none
+	&:active, &:hover
+		outline: 0!important
+
+abbr[title]
+	border-bottom: 1px dotted
+
+b, strong
+	font-weight: bold
+
+dfn
+	font-style: italic
+
+mark
+	background: #ff0
+	color: #000
+
+small
+	font-size: 80%
+
+sub
+	font-size: 75%
+	line-height: 0
+	position: relative
+	vertical-align: baseline
+
+sup
+	font-size: 75%
+	line-height: 0
+	position: relative
+	vertical-align: baseline
+	top: -0.5em
+
+sub
+	bottom: -0.25em
+
+img
+	border: 0
+
+svg:not(:root)
+	overflow: hidden
+
+figure
+	margin: 1em 40px
+
+hr
+	box-sizing: content-box
+	height: 0
+
+pre
+	overflow: auto
+
+code, kbd, pre, samp
+	font-family: monospace, monospace
+	font-size: 1rem
+
+button, input, optgroup, select, textarea
+	color: inherit
+	font: inherit
+	margin: 0
+
+button
+	overflow: visible
+	text-transform: none
+
+select
+	text-transform: none
+
+button, html input[type="button"]
+	-webkit-appearance: button
+	cursor: pointer
+
+input
+	&[type="reset"], &[type="submit"]
+		-webkit-appearance: button
+		cursor: pointer
+
+button[disabled], html input[disabled]
+	cursor: default
+
+button::-moz-focus-inner
+	border: 0
+	padding: 0
+
+input
+	&::-moz-focus-inner
+		border: 0
+		padding: 0
+	line-height: normal
+	&[type="checkbox"], &[type="radio"]
+		box-sizing: border-box
+		padding: 0
+	&[type="number"]
+		&::-webkit-inner-spin-button, &::-webkit-outer-spin-button
+			height: auto
+	&[type="search"]
+		-webkit-appearance: textfield
+		box-sizing: content-box
+		&::-webkit-search-cancel-button, &::-webkit-search-decoration
+			-webkit-appearance: none
+
+fieldset
+	border: 1px solid #c0c0c0
+	margin: 0 2px
+	padding: 0.35em 0.625em 0.75em
+
+legend
+	border: 0
+	padding: 0
+
+textarea
+	overflow: auto
+
+optgroup
+	font-weight: bold
+
+table
+	border-collapse: collapse
+	border-spacing: 0
+
+td, th
+	padding: 0
+
+/*--------------------------------------------------------------
+ *# Typography
+ *--------------------------------------------------------------
+h1, h2, h3, h4, h5, h6
+	clear: both
+	margin: 0
+	font-family: $main-font
+	font-weight: 500
+	color: $dark-text
+
+h1
+	font-size: 2.5rem
+
+h2
+	font-size: 2.0rem
+
+h3
+	font-size: 1.8rem
+
+h4, h5, h6
+	font-size: 1.6rem
+
+button, input, select, textarea
+	color: #404040
+	font-size: 1.6rem
+	line-height: 1.5
+
+p
+	margin-bottom: 1.5rem
+
+dfn, cite, em, i
+	font-style: italic
+
+blockquote
+	margin: 0 1.5em
+
+address
+	margin: 0 0 1.5em
+
+pre
+	background: #eee
+	font-size: 1.5rem
+	line-height: 1.6
+	margin-bottom: 1.6em
+	max-width: 100%
+	overflow: auto
+	padding: 1.6em
+
+code, kbd, tt, var
+	font-size: 1.5rem
+
+abbr, acronym
+	border-bottom: 1px dotted #666
+	cursor: help
+
+mark, ins
+	background: #fff9c0
+	text-decoration: none
+
+big
+	font-size: 125%
+
+/*--------------------------------------------------------------
+ *# Elements
+ *--------------------------------------------------------------
+blockquote
+	&:before, &:after
+		content: ""
+
+q
+	&:before, &:after
+		content: ""
+
+blockquote, q
+	quotes: "" ""
+
+hr
+	background-color: #ccc
+	border: 0
+	height: 1px
+	margin-bottom: 1.5em
+
+ul, ol
+	margin: 0 0 0 0
+
+
+
+dt
+	font-weight: bold
+
+dd
+	margin: 0 1.5em 1.5em
+
+img
+	height: auto
+	max-width: 100%
+
+table
+	margin: 0 0 1.5em
+	width: 100%
+
+	tr
+		border: 1px solid #e5e5e5
+
+		td, th
+			padding: 9px 10px
+			text-align: center
+			border: 1px solid #e5e5e5
+
+		th
+			color: #666666
+			background-color: #fdfdfd
+
+/*--------------------------------------------------------------
+ *# Forms
+ *--------------------------------------------------------------
+button
+	width: 100%
+	padding: 5px 15px
+	font-size: 1.6rem
+	font-weight: 600
+	color: $light-main
+	text-transform: uppercase
+	border: 1px solid $bg-secundary
+	background: $bg-secundary
+	box-shadow: none
+	border-radius: 5px
+
+input
+	&[type="button"],
+	&[type="reset"],
+	&[type="submit"]
+		width: 100%
+		padding: 5px 15px
+		font-size: 1.6rem
+		font-weight: 600
+		color: $light-main
+		text-transform: uppercase
+		border: 1px solid $bg-secundary
+		background: $bg-secundary
+		box-shadow: none
+		border-radius: 5px
+
+button:hover
+	background: darken($bg-secundary, .5)
+
+input
+	&[type="button"]:hover,
+	&[type="reset"]:hover,
+	&[type="submit"]:hover
+		background: darken($bg-secundary, .5)
+
+input
+	&[type="button"]:focus,
+	&[type="reset"]:focus,
+	&[type="submit"]:focus
+		background: $bg-secundary
+
+input
+	&[type="button"]:active,
+	&[type="reset"]:active,
+	&[type="submit"]:active
+		background: $bg-secundary
+
+	&[type="text"],
+	&[type="email"],
+	&[type="url"],
+	&[type="password"],
+	&[type="search"],
+	&[type="number"],
+	&[type="tel"]
+		width: 100%
+		padding: 5px 15px
+		font-size: 1.6rem
+		font-weight: 300
+		color: $text-color
+		border: 1px solid $text-color
+		border-radius: 5px
+		background: $light-main
+
+textarea
+	width: 100%
+	padding: 0 14px
+	font-size: 1.7rem
+	font-weight: 100
+	color: $dark-text
+	//border: 2px solid #374a87
+	//border-radius: 5px
+	background: $light-text
+
+input
+	&[type="text"]:focus,
+	&[type="email"]:focus,
+	&[type="url"]:focus,
+	&[type="password"]:focus,
+	&[type="search"]:focus,
+	&[type="tel"]:focus
+		border-color: #737373
+
+textarea:focus
+	border-color: #737373
+
+
+/*--------------------------------------------------------------
+ *# Navigation
+ *--------------------------------------------------------------
+/*--------------------------------------------------------------
+ *## Links
+ *--------------------------------------------------------------
+
+a
+	color: $main-color
+
+	&:hover,
+	&:focus,
+	&:active
+		color: $text-color
+		outline: 0!important
+
+
+/*--------------------------------------------------------------
+ *# Clearings
+ *--------------------------------------------------------------
+
+.cf
+	&:before, &:after
+		content: ""
+		display: table
+
+	&:after
+		clear: both
+
+/* Make sure embeds and iframes fit their containers.
+
+embed, iframe, object
+	max-width: 100%
+
+
+.dropdown-content
+	display: none
+	&.-is-active
+		display: inline-block
