@@ -8,10 +8,6 @@
 html
 	font-size: 62.5%
 	font-family: $main-font
-	-webkit-text-size-adjust: 100%
-	-ms-text-size-adjust: 100%
-	max-width: 100%
-	overflow-x: hidden
 
 body
 	margin: 0
@@ -20,63 +16,14 @@ body
 	font-family: $main-font
 	color: $text-color
 	background: $bg-body
-	overflow-x: hidden
-
-#page
-	display: inline-block
-	width: 100%
 
 article, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary
 	display: block
 
-audio, canvas, progress, video
-	display: inline-block
-	vertical-align: baseline
-
-audio:not([controls])
-	display: none
-	height: 0
-
-[hidden], template
-	display: none
-
 a
-	background-color: transparent
 	text-decoration: none
 	&:active, &:hover
-		outline: 0!important
-
-abbr[title]
-	border-bottom: 1px dotted
-
-b, strong
-	font-weight: bold
-
-dfn
-	font-style: italic
-
-mark
-	background: #ff0
-	color: #000
-
-small
-	font-size: 80%
-
-sub
-	font-size: 75%
-	line-height: 0
-	position: relative
-	vertical-align: baseline
-
-sup
-	font-size: 75%
-	line-height: 0
-	position: relative
-	vertical-align: baseline
-	top: -0.5em
-
-sub
-	bottom: -0.25em
+		outline: 0
 
 img
 	border: 0
@@ -143,28 +90,6 @@ input
 		&::-webkit-search-cancel-button, &::-webkit-search-decoration
 			-webkit-appearance: none
 
-fieldset
-	border: 1px solid #c0c0c0
-	margin: 0 2px
-	padding: 0.35em 0.625em 0.75em
-
-legend
-	border: 0
-	padding: 0
-
-textarea
-	overflow: auto
-
-optgroup
-	font-weight: bold
-
-table
-	border-collapse: collapse
-	border-spacing: 0
-
-td, th
-	padding: 0
-
 /*--------------------------------------------------------------
  *# Typography
  *--------------------------------------------------------------
@@ -195,88 +120,18 @@ button, input, select, textarea
 p
 	margin-bottom: 1.5rem
 
-dfn, cite, em, i
-	font-style: italic
-
-blockquote
-	margin: 0 1.5em
-
-address
-	margin: 0 0 1.5em
-
-pre
-	background: #eee
-	font-size: 1.5rem
-	line-height: 1.6
-	margin-bottom: 1.6em
-	max-width: 100%
-	overflow: auto
-	padding: 1.6em
-
-code, kbd, tt, var
-	font-size: 1.5rem
-
-abbr, acronym
-	border-bottom: 1px dotted #666
-	cursor: help
-
-mark, ins
-	background: #fff9c0
-	text-decoration: none
-
-big
-	font-size: 125%
-
-/*--------------------------------------------------------------
- *# Elements
- *--------------------------------------------------------------
-blockquote
-	&:before, &:after
-		content: ""
-
-q
-	&:before, &:after
-		content: ""
-
-blockquote, q
-	quotes: "" ""
-
 hr
-	background-color: #ccc
+	background-color:  #dcdcdc
 	border: 0
 	height: 1px
-	margin-bottom: 1.5em
+	margin: 15px auto
 
 ul, ol
-	margin: 0 0 0 0
-
-
-
-dt
-	font-weight: bold
-
-dd
-	margin: 0 1.5em 1.5em
+	margin: 0
 
 img
 	height: auto
 	max-width: 100%
-
-table
-	margin: 0 0 1.5em
-	width: 100%
-
-	tr
-		border: 1px solid #e5e5e5
-
-		td, th
-			padding: 9px 10px
-			text-align: center
-			border: 1px solid #e5e5e5
-
-		th
-			color: #666666
-			background-color: #fdfdfd
 
 /*--------------------------------------------------------------
  *# Forms
