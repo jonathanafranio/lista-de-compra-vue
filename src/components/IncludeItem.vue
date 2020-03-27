@@ -35,7 +35,9 @@ export default {
 
             this.$emit('add-prod', {
                 nome: this.nome,
-                quantidade: this.quantidade
+                quantidade: this.quantidade,
+                preco: 0,
+                valortotal: 0
             });
 
             this.nome = '';
