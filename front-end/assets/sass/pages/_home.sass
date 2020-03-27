@@ -22,7 +22,8 @@
         position: absolute
         bottom: 0
         transform: scale(1.2)
-        animation: kenburns 30s infinite
+        will-change: transform
+        animation: kenburns 40s infinite
 
 +keyframes(kenburns)
     0%
@@ -31,9 +32,6 @@
         transform: scale(1)
     100%
         transform: scale(1.2)
-
-.title-app
-    text-align: center
 
 .form-include
     display: flex
@@ -146,13 +144,3 @@
     &__price-total
         &:before
             content: 'R$'
-
-.alert
-    display: inline-block
-
-
-
-.svg-hidden
-    display: none
-    width: 300px
-    margin: 0 auto
