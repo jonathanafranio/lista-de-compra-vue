@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="list__price-uni col mx-3 sm-2 ph-1">
-                    <input type="number" name="price-product" placeholder="Valor">
+                    <input type="number" name="price-product" placeholder="Valor (R$):">
                 </div>
 
                 <div class="list__price-total col mx-3 sm-3 ph-1">
@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="list__remve-product col mx-1 sm-1 ph-1">
-                    <button type="button" name="button" class="list__btn">
+                    <button type="button" name="button" class="list__btn" v-on:click.prevent="removeProduct(index)">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                             <path fill="currentColor" d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z"></path>
                         </svg>
@@ -71,8 +71,8 @@ export default {
         addProduct(product){
             this.produts.push(product);
         },
-        expReg() {
-            //value.value != '' ? value.value.replace(value.value, '^\d*[0-9](\,\d*[0-2])?$)' : ''
+        removeProduct(index){
+            this.produts.splice(index, 1);
         }
     },
     watch: {
