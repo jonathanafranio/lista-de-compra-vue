@@ -6,7 +6,7 @@
         <form class="form-include" v-on:submit.prevent="addProduct">
             <div class="mx-6 sm-4 ph-2 form-include__box">
                 <label class="form-include__label" for="item-name">Item:</label>
-                <input type="text" name="item-name" placeholder="Ex.: Sabonete" v-model="nome" value="" required>
+                <input type="text" name="item-name" placeholder="Ex.: Sabonete" v-model="nome" required>
             </div>
             <div class="mx-3 sm-2 ph-2 form-include__box">
                 <label class="form-include__label" for="item-quantidade">Quantidade:</label>

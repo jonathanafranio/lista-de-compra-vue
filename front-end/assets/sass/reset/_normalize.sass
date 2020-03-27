@@ -59,11 +59,19 @@ button, html input[type="button"]
 	cursor: pointer
 
 input
-	&[type="reset"], &[type="submit"]
+	&::-webkit-outer-spin-button,
+	&::-webkit-inner-spin-button
+		-webkit-appearance: none
+		margin: 0
+	&[type="number"]
+		-moz-appearance: textfield
+
+	&[type="reset"],
+	&[type="submit"]
 		-webkit-appearance: button
 		cursor: pointer
 
-button[disabled], html input[disabled]
+button[disabled], input[disabled]
 	cursor: default
 
 button::-moz-focus-inner
@@ -196,6 +204,9 @@ input
 		border: 1px solid $text-color
 		border-radius: 5px
 		background: $light-main
+	&[disabled]
+		border-color: transparent
+		background: transparent
 
 textarea
 	width: 100%

@@ -44,7 +44,6 @@
         flex-wrap: wrap
         align-items: flex-end
         margin-top: 15px
-
         @media screen and (min-width: 521px)
             padding-left: 15px
             padding-right: 15px
@@ -52,6 +51,12 @@
                 padding-left: 0px
             &:last-child
                 padding-right: 0px
+        @media screen and (min-width: 521px) and (max-width: 699px)
+            &:last-child
+                padding-left: 0px
+            &:nth-child(2)
+                padding-right: 0px
+
         input, button
             display: block
             width: 100%
@@ -63,8 +68,79 @@
     display: block
     padding: 0px
     margin-bottom: 10px
+    color: $dark-text
     list-style-type: none
     list-style-position: inside
+
+    .col
+        padding-left: 15px
+        padding-right: 15px
+        &:last-child
+            padding-right: 0px
+        @media screen and (max-width: 699px)
+            margin-bottom: 10px
+
+        @media screen and (min-width: 521px) and (max-width: 699px)
+            &.list__price-uni
+                padding-left: 0px !important
+
+    &__title
+        @media screen and (max-width: 699px)
+            display: none
+
+    &__prod
+        padding-bottom: 10px
+        margin-bottom: 10px
+        border-bottom: 1px solid #dcdcdc
+
+    &__name-prod
+        display: inline-block
+        padding: 5px 15px 5px 30px
+        position: relative
+        text-transform: capitalize
+
+    &__label-prod
+        color: $dark-text
+        &:before
+            content: ''
+            display: block
+            width: 20px
+            height: 20px
+            border: 1px solid $text-color
+            position: absolute
+            left: 0
+            top: 50%
+            transform: translateY(-50%)
+            border-radius: 5px
+
+    &__checkbox
+        position: absolute
+        left: 0
+        opacity: 0
+        &:checked + label
+            color: $text-color
+            text-decoration: line-through
+            &:before
+                background: url(../imgs/icon-check.svg)
+                background-size: 100%
+                background-position: center
+                background-repeat: no-repeat
+
+    &__btn
+        height: 36px
+        background: $main-color
+        border-color: $main-color
+        text-align: center
+        svg
+            display: block
+            margin: auto
+            width: auto
+            height: 16px
+
+    &__qtd-prod
+        @media screen and (max-width: 699px)
+            &:before
+                content: 'Qtd: '
 
 
 .alert
