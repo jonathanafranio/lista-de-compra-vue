@@ -64,16 +64,11 @@ input
 	&[type="number"]
 		&::-webkit-inner-spin-button, &::-webkit-outer-spin-button
 			height: auto
-	&[type="search"]
-		-webkit-appearance: textfield
-		box-sizing: content-box
-		&::-webkit-search-cancel-button, &::-webkit-search-decoration
-			-webkit-appearance: none
 
 /*--------------------------------------------------------------
  *# Typography
  *--------------------------------------------------------------
-h1, h2, h3, h4, h5, h6
+h1, h2, h3
 	clear: both
 	margin: 0
 	font-family: $main-font
@@ -208,27 +203,3 @@ a
 	&:active
 		color: $text-color
 		outline: 0!important
-
-
-/*--------------------------------------------------------------
- *# Clearings
- *--------------------------------------------------------------
-
-.cf
-	&:before, &:after
-		content: ""
-		display: table
-
-	&:after
-		clear: both
-
-/* Make sure embeds and iframes fit their containers.
-
-embed, iframe, object
-	max-width: 100%
-
-
-.dropdown-content
-	display: none
-	&.-is-active
-		display: inline-block
