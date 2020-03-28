@@ -3,7 +3,7 @@
         <IncludeItem v-on:add-prod="addProduct"></IncludeItem>
         <hr>
         <ul class="list mx-12">
-            <li v-if="produts.length <= 0">
+            <li v-if="products.length <= 0">
                 <h3>Sua lista está vazia.</h3>
             </li>
             <li class="list__prod list__title" v-else>
@@ -25,7 +25,7 @@
 
                 <div class="list__remve-product col mx-1"></div>
             </li>
-            <li class="list__prod" v-for="(product, index) in produts" v-bind:key="index" v-bind:id="'product-'+index">
+            <li class="list__prod" v-for="(product, index) in products" v-bind:key="index" v-bind:id="'product-'+index">
                 <input type="checkbox" class="list__checkbox" v-bind:id="index">
                 <label class="list__name-prod list__label-prod mx-4 sm-5 ph-2" v-bind:for="index">
                     {{ product.nome }}
@@ -36,12 +36,12 @@
                 </div>
 
                 <div class="list__price-uni col mx-3 sm-2 ph-1">
-                    <input type="number" name="price-product" placeholder="Valor (R$):" v:bind:value="preco"  v-bind:id="'price-'+index" v-on:keyup="incluirPreco(index)">
+                    <!-- <input type="number" name="price-product" placeholder="Valor (R$):" v:bind:value="preco" v-bind:id="'price-'+index" v-on:keyup="incluirPreco(index)" v-on:blur="somarCompra(index)"> -->
+                    <input type="number" name="price-product" placeholder="Valor (R$):" v:bind:value="preco" v-bind:id="'price-'+index" v-on:keyup="incluirPreco(index)">
                 </div>
 
                 <div class="list__price-total col mx-3 sm-3 ph-1">
                     {{ product.valortotal }}
-                    <!--<input type="text" name="total-product" disabled>-->
                 </div>
 
                 <div class="list__remve-product col mx-1 sm-1 ph-1">
@@ -54,6 +54,9 @@
             </li>
         </ul>
 
+        <footer class="footer">
+            <p>Total da compra: R${{ totalvalor }}</p>
+        </footer>
     </div>
 </template>
 
@@ -65,38 +68,46 @@ export default {
     },
     data(){
         return {
-            produts: [],
+            products: [],
+            totalprecos: [],
+            totalvalor: 0
+            //valorTotal: 0
         }
     },
     methods: {
         addProduct(product){
-            this.produts.push(product);
+            this.products.push(product);
         },
         removeProduct(index){
-            this.produts.splice(index, 1);
+            this.products.splice(index, 1);
         },
         incluirPreco(index){
-            console.log('index', index);
-            console.log(this.produts[index]);
             let precoUnitario = document.querySelector('#price-'+index).value.replace(',','.');
-            let precoTotal = (precoUnitario * this.produts[index].quantidade).toFixed(2);
-            console.log('preço:', precoUnitario);
-            console.log('preco total:', precoTotal);
+            let precoTotal = (precoUnitario * this.products[index].quantidade).toFixed(2);
+            //console.log('preço:', precoUnitario);
+            //console.log('preco total:', precoTotal);
 
+            this.products[index].preco = precoUnitario;
+            this.products[index].valortotal = precoTotal;
 
-            this.produts[index].preco = precoUnitario;
-            this.produts[index].valortotal = precoTotal;
-            //console.log(this.products.find(index));
-            //this.produts.map((index))
+            let totalproduto = this.products.map(function(product) {
+                return +product.valortotal;
+            });
+            //this.totalcompra = totalproduto;
+            this.totalprecos = totalproduto;
+
+            let total = totalproduto.reduce((total,num) => { return total + num; });
+
+            this.totalvalor = total.toFixed(2);
         }
     },
     computed: {
+
         /*allProducts(){
             return this.products;
         }*/
     },
     watch: {
-        //console.log(this.produts);
     }
 }
 </script>
