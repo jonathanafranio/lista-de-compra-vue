@@ -55,7 +55,7 @@
         </ul>
 
         <footer class="footer">
-            <p>Total da compra: R${{ totalvalor }}</p>
+            <p>Total da compra: <strong>R${{ totalvalor }}</strong></p>
         </footer>
     </div>
 </template>
@@ -71,7 +71,6 @@ export default {
             products: [],
             totalprecos: [],
             totalvalor: 0
-            //valorTotal: 0
         }
     },
     methods: {
@@ -93,7 +92,7 @@ export default {
             let totalproduto = this.products.map(function(product) {
                 return +product.valortotal;
             });
-            //this.totalcompra = totalproduto;
+
             this.totalprecos = totalproduto;
 
             let total = totalproduto.reduce((total,num) => { return total + num; });
@@ -102,10 +101,6 @@ export default {
         }
     },
     computed: {
-
-        /*allProducts(){
-            return this.products;
-        }*/
     },
     watch: {
     }
