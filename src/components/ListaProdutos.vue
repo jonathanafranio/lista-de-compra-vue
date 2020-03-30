@@ -37,7 +37,7 @@
 
                 <div class="list__price-uni col mx-3 sm-2 ph-1">
                     <!-- <input type="number" name="price-product" placeholder="Valor (R$):" v:bind:value="preco" v-bind:id="'price-'+index" v-on:keyup="incluirPreco(index)" v-on:blur="somarCompra(index)"> -->
-                    <input type="number" name="price-product" placeholder="Valor (R$):" v:bind:value="preco" v-bind:id="'price-'+index" v-on:keyup="incluirPreco(index)">
+                    <input type="number" pattern="[0-9]+([,\.][0-2]+)?" name="price-product" placeholder="Valor (R$):" step="0.01" v-bind:value="product.preco" v-bind:id="'price-'+index" v-on:keyup="incluirPreco(index)">
                 </div>
 
                 <div class="list__price-total col mx-3 sm-3 ph-1">
@@ -61,12 +61,12 @@
 </template>
 
 <script>
-let productsList = [];
-if(localStorage.getItem('productsList')!=null) {
-    productsList = JSON.parse(localStorage.getItem('productsList'));
-} else {
-    productsList = [];
-}
+let productsList = [],
+    totalcompra;
+localStorage.getItem('productsList')!=null ? productsList = JSON.parse(localStorage.getItem('productsList')) : productsList = [];
+
+localStorage.getItem('totalvalor')==null ? totalcompra = 0 : totalcompra = localStorage.getItem('totalvalor');
+
 import IncludeItem from './IncludeItem'
 export default {
     components: {
@@ -76,7 +76,7 @@ export default {
         return {
             products: productsList,
             totalprecos: [],
-            totalvalor: 0
+            totalvalor: totalcompra
         }
     },
     methods: {
@@ -86,7 +86,12 @@ export default {
         },
         removeProduct(index){
             this.products.splice(index, 1);
+            this.totalprecos.splice(index, 1);
             localStorage.setItem('productsList', JSON.stringify(this.products));
+
+            this.totalvalor = this.totalprecos.reduce((total,num) => { return total + num; }).toFixed(2);
+
+            localStorage.setItem('totalvalor', this.totalvalor);
         },
         incluirPreco(index){
             let precoUnitario = document.querySelector('#price-'+index).value.replace(',','.');
@@ -106,6 +111,9 @@ export default {
             let total = totalproduto.reduce((total,num) => { return total + num; });
 
             this.totalvalor = total.toFixed(2);
+
+            localStorage.setItem('productsList', JSON.stringify(this.products));
+            localStorage.setItem('totalvalor', this.totalvalor);
         }
     },
     computed: {
