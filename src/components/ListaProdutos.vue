@@ -61,9 +61,15 @@
 </template>
 
 <script>
-let productsList = [],
-    totalcompra;
-localStorage.getItem('productsList')!=null ? productsList = JSON.parse(localStorage.getItem('productsList')) : productsList = [];
+let productsList = [];
+let precototais = [];
+let totalcompra;
+if(localStorage.getItem('productsList')!=null) {
+    productsList = JSON.parse(localStorage.getItem('productsList'));
+    precototais = productsList.map(function(prod) {
+        return +prod.valortotal;
+    });
+}
 
 localStorage.getItem('totalvalor')==null ? totalcompra = 0 : totalcompra = localStorage.getItem('totalvalor');
 
@@ -75,7 +81,7 @@ export default {
     data(){
         return {
             products: productsList,
-            totalprecos: [],
+            totalprecos: precototais,
             totalvalor: totalcompra
         }
     },
@@ -87,11 +93,18 @@ export default {
         removeProduct(index){
             this.products.splice(index, 1);
             this.totalprecos.splice(index, 1);
-            localStorage.setItem('productsList', JSON.stringify(this.products));
 
-            this.totalvalor = this.totalprecos.reduce((total,num) => { return total + num; }).toFixed(2);
+            if(this.products.length) {
+                //alert('ainda tem produto(s)');
+                localStorage.setItem('productsList', JSON.stringify(this.products));
+                this.totalvalor = this.totalprecos.reduce((total,num) => { return total + num; }).toFixed(2);
 
-            localStorage.setItem('totalvalor', this.totalvalor);
+                localStorage.setItem('totalvalor', this.totalvalor);
+            } else {
+                this.totalvalor = 0;
+                //alert('NAO TEM PRODUTOS!!!');
+                localStorage.clear();
+            }
         },
         incluirPreco(index){
             let precoUnitario = document.querySelector('#price-'+index).value.replace(',','.');
