@@ -61,6 +61,12 @@
 </template>
 
 <script>
+let productsList = [];
+if(localStorage.getItem('productsList')!=null) {
+    productsList = JSON.parse(localStorage.getItem('productsList'));
+} else {
+    productsList = [];
+}
 import IncludeItem from './IncludeItem'
 export default {
     components: {
@@ -68,7 +74,7 @@ export default {
     },
     data(){
         return {
-            products: [],
+            products: productsList,
             totalprecos: [],
             totalvalor: 0
         }
@@ -76,9 +82,11 @@ export default {
     methods: {
         addProduct(product){
             this.products.push(product);
+            localStorage.setItem('productsList', JSON.stringify(this.products));
         },
         removeProduct(index){
             this.products.splice(index, 1);
+            localStorage.setItem('productsList', JSON.stringify(this.products));
         },
         incluirPreco(index){
             let precoUnitario = document.querySelector('#price-'+index).value.replace(',','.');
