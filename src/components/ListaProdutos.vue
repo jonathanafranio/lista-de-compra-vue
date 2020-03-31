@@ -37,8 +37,7 @@
                 </div>
 
                 <div class="list__price-uni col mx-3 sm-2 ph-1">
-                    <!-- <input type="number" name="price-product" placeholder="Valor (R$):" v:bind:value="preco" v-bind:id="'price-'+index" v-on:keyup="incluirPreco(index)" v-on:blur="somarCompra(index)"> -->
-                    <input type="number" pattern="[0-9]+([,\.][0-2]+)?" name="price-product" placeholder="Valor (R$):" step="0.01" v-bind:value="product.preco" v-bind:id="'price-'+index" v-on:keyup="incluirPreco(index)">
+                    <input type="number" pattern="[0-9]+([,\.][0-2]+)?" name="price-product" placeholder="Valor (R$):" step="0.01" v-bind:id="'price-'+index" v-on:keyup="incluirPreco(index)" v-model="product.preco">
                 </div>
 
                 <div class="list__price-total col mx-3 sm-3 ph-1">
