@@ -25,7 +25,8 @@
 
                 <div class="list__remve-product col mx-1"></div>
             </li>
-            <li class="list__prod" v-for="(product, index) in products" v-bind:key="index" v-bind:id="'product-'+index">
+            <!--<li class="list__prod" v-for="(product, index) in products" v-bind:key="index" v-bind:id="'product-'+index">-->
+            <li class="list__prod" v-for="(product, index) in allProducts" v-bind:key="index" v-bind:id="'product-'+index">
                 <input type="checkbox" class="list__checkbox" v-bind:id="index">
                 <label class="list__name-prod list__label-prod mx-4 sm-5 ph-2" v-bind:for="index">
                     {{ product.nome }}
@@ -130,8 +131,14 @@ export default {
         }
     },
     computed: {
+        allProducts(){
+            return this.products;
+        }
     },
     watch: {
+        products(product){
+            console.log('product', product);
+        }
     }
 }
 </script>
