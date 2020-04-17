@@ -61,18 +61,6 @@
 </template>
 
 <script>
-let productsList = [];
-let precototais = [];
-let totalcompra;
-if(localStorage.getItem('productsList')!=null) {
-    productsList = JSON.parse(localStorage.getItem('productsList'));
-    precototais = productsList.map(function(prod) {
-        return +prod.valortotal;
-    });
-}
-
-localStorage.getItem('totalvalor')==null ? totalcompra = 0 : totalcompra = localStorage.getItem('totalvalor');
-
 import IncludeItem from './IncludeItem'
 export default {
     components: {
@@ -80,9 +68,23 @@ export default {
     },
     data(){
         return {
-            products: productsList,
-            totalprecos: precototais,
-            totalvalor: totalcompra
+            products: [],
+            totalprecos: [],
+            totalvalor: 0
+        }
+    },
+    created(){
+        if(localStorage.getItem('productsList')!=null) {
+            this.products = JSON.parse(localStorage.getItem('productsList'));
+
+            let precototais = this.products.map(function(prod) {
+                return +prod.valortotal;
+            });
+            this.totalprecos = precototais;
+        }
+
+        if(localStorage.getItem('totalvalor')!=null) {
+            this.totalvalor = localStorage.getItem('totalvalor');
         }
     },
     methods: {
