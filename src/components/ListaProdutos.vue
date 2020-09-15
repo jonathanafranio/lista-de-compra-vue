@@ -77,9 +77,7 @@ export default {
         if(localStorage.getItem('productsList')!=null) {
             this.products = JSON.parse(localStorage.getItem('productsList'));
 
-            let precototais = this.products.map(function(prod) {
-                return +prod.valortotal;
-            });
+            let precototais = this.products.map((prod) => +prod.valortotal);
             this.totalprecos = precototais;
         }
 
@@ -117,9 +115,7 @@ export default {
             this.products[index].preco = precoUnitario;
             this.products[index].valortotal = precoTotal;
 
-            let totalproduto = this.products.map(function(product) {
-                return +product.valortotal;
-            });
+            let totalproduto = this.products.map((product) => +product.valortotal);
 
             this.totalprecos = totalproduto;
 
