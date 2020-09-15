@@ -99,7 +99,7 @@ export default {
             if(this.products.length) {
                 //alert('ainda tem produto(s)');
                 localStorage.setItem('productsList', JSON.stringify(this.products));
-                this.totalvalor = this.totalprecos.reduce((total,num) => { return total + num; }).toFixed(2);
+                this.totalvalor = this.totalprecos.reduce((total,num) => total + num).toFixed(2);
 
                 localStorage.setItem('totalvalor', this.totalvalor);
             } else {
@@ -123,7 +123,7 @@ export default {
 
             this.totalprecos = totalproduto;
 
-            let total = totalproduto.reduce((total,num) => { return total + num; });
+            let total = totalproduto.reduce((total,num) => total + num);
 
             this.totalvalor = total.toFixed(2);
 
