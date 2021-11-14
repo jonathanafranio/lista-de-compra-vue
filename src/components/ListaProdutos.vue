@@ -7,11 +7,11 @@
                 <h3>Sua lista está vazia.</h3>
             </li>
             <li class="list__prod list__title" v-else>
-                <strong class="list__name-prod mx-4">
+                <strong class="list__name-prod mx-3">
                     Produto:
                 </strong>
 
-                <strong class="list__qtd-prod col mx-1">
+                <strong class="list__qtd-prod col mx-2">
                     Qtd:
                 </strong>
 
@@ -27,12 +27,12 @@
             </li>
             <li class="list__prod" v-for="(product, index) in allProducts" v-bind:key="index" v-bind:id="'product-'+index">
                 <input type="checkbox" class="list__checkbox" v-bind:id="index">
-                <label class="list__name-prod list__label-prod mx-4 sm-5 ph-2" v-bind:for="index">
+                <label class="list__name-prod list__label-prod mx-3 sm-5 ph-2" v-bind:for="index">
                     {{ product.nome }}
                 </label>
 
-                <div class="list__qtd-prod col mx-1 sm-1 ph-1">
-                    {{ product.quantidade }}
+                <div class="list__qtd-prod col mx-2 sm-1 ph-1">
+                    <input type="number" v-bind:id="'qtd'+index" v-model="product.quantidade" v-on:keyup="incluirPreco(index)" v-on:blur="requireQtd(index)" min="1" required>
                 </div>
 
                 <div class="list__price-uni col mx-3 sm-2 ph-1">
@@ -105,13 +105,20 @@ export default {
                 localStorage.clear();
             }
         },
-        incluirPreco(index){
-            let precoUnitario = document.querySelector('#price-'+index).value.replace(',','.');
-            let precoTotal = (precoUnitario * this.products[index].quantidade).toFixed(2);
-            //console.log('preço:', precoUnitario);
-            //console.log('preco total:', precoTotal);
+        requireQtd(index){
+            const qdtValue = this.products[index].quantidade;
+            const regexValid = /\d/ig.test(qdtValue);
+            ! regexValid ? this.products[index].quantidade = 1 : this.products[index].quantidade;
 
-            this.products[index].preco = precoUnitario;
+            qdtValue === '' ? this.products[index].quantidade = 1 : qdtValue;
+            qdtValue < 1 ? this.products[index].quantidade = 1 : qdtValue;
+
+            this.incluirPreco(index);
+        },
+        incluirPreco(index){
+            let precoUnitario = this.products[index].preco;
+            let precoTotal = (precoUnitario * this.products[index].quantidade).toFixed(2);
+            
             this.products[index].valortotal = precoTotal;
 
             let totalproduto = this.products.map((product) => +product.valortotal);
