@@ -8,7 +8,9 @@ function compile(){
         .pipe(sassGlob())
         .pipe(sass({outputStyle:'compressed'}))
         //.pipe(sass({outputStyle: 'expanded', sourceComments: true}))
-		    .pipe(gulp.dest('./assets/css/'))
+		//.pipe(gulp.dest('./assets/css/'))
+        .pipe(gulp.dest('../public/assets/css/'))
+
 	)
 }
 exports.compile = compile;
