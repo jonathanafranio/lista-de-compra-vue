@@ -132,9 +132,9 @@ export default {
         }
     },
     watch: {
-        products(product){
-            console.log('product', product);
-        }
+        //products(product){
+        //    console.log('product', product);
+        //}
     }
 }
 </script>

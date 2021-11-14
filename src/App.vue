@@ -1,19 +1,18 @@
 <template>
   <div id="app">
-    <BgImagem></BgImagem>
-    <!--<img alt="Vue logo" src="./assets/logo.png">-->
+    <div class="image-bg">
+        <img src="./assets/mercado.jpg" alt="Lista de compras">
+    </div>
     <ListaProdutos></ListaProdutos>
   </div>
 </template>
 
 <script>
-import BgImagem from './components/BgImagem.vue'
 import ListaProdutos from './components/ListaProdutos.vue'
 
 export default {
   name: 'App',
   components: {
-    BgImagem,
     ListaProdutos,
   }
 }
