@@ -96,6 +96,7 @@ module.exports = configure(function (ctx) {
       // Quasar plugins
       plugins: [],
       removeDefaultCss: true,
+      cssAddon: false,
     },
 
     // animations: 'all', // --- includes all animations
@@ -141,7 +142,7 @@ module.exports = configure(function (ctx) {
       manifest: {
         name: `lista-de-compra-vue`,
         short_name: `lista-de-compra-vue`,
-        description: `A Quasar Framework app`,
+        description: `Lista de compra em Vue`,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
