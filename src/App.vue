@@ -1,10 +1,21 @@
 <template>
-  <router-view />
+  <div id="app">
+    <div class="image-bg">
+      <img src="~assets/mercado.jpg" alt="Lista de compras">
+    </div>
+    <ListaProdutos></ListaProdutos>
+  </div>
+  <!--<router-view /> -->
 </template>
 <script>
+import ListaProdutos from 'components/ListaProdutos.vue'
+
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'App'
+  name: 'App',
+  components: {
+    ListaProdutos
+  }
 })
 </script>
