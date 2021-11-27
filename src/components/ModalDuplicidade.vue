@@ -10,8 +10,8 @@
                 <br>
                 <label>Deseja alterar a quantidade?</label>
                 <fieldset class="modal__qtd"> 
-                    <button class="modal__qtd-btn" v-on:click="reduzir">-</button>
-                    <input class="modal__qtd-ipt" type="number" min="1" v-model="newQtd" required>
+                    <button class="modal__qtd-btn" v-on:click="reduzir" :disabled="newQtd < 2 ? true : false">-</button>
+                    <input class="modal__qtd-ipt" type="number" min="1" v-on:blur="min" v-model="newQtd" required>
                     <button class="modal__qtd-btn" v-on:click="acrescentar">+</button>
                 </fieldset>
             </div>
@@ -56,6 +56,9 @@ export default {
         },
         remover(){
             this.$emit('remove-modal', this.duplicidade.currentArray)
+        },
+        min(){
+            this.newQtd < 1 ? this.newQtd = 1 : this.newQtd
         }
     }
 }
