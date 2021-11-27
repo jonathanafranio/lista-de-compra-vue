@@ -1,0 +1,121 @@
+.modal
+    display: none
+    width: 100vw
+    height: 100vh
+    align-items: center
+    flex-direction: column
+    justify-content: center
+    overflow: hidden
+    position: fixed
+    left: 0
+    top: 0
+    background-color: rgba(10,10,10,.86)
+    z-index: 1000
+
+    &.-show
+        display: flex
+    
+    &__content
+        margin: 0 auto
+        max-height: calc(100vh - 40px)
+        width: calc(100vw - 40px)
+        max-width: 460px
+        position: relative
+        border-radius: 4px
+        overflow: hidden
+        box-shadow: 0px 0px 15px 5px rgba(10,10,10,0.6)
+    
+    &__header
+        display: flex
+        align-items: center
+        justify-content: space-between
+        padding: 12px 16px
+        position: relative
+        background-color: $main-color
+        color: $light-main
+        font-weight: 700
+        line-height: 1.25
+        border-radius: 4px 4px 0 0
+
+    &__title 
+        font-weight: 700
+        text-transform: capitalize
+
+    &__close
+        display: inline-block
+        height: 20px
+        width: 20px
+        padding: 0px
+        margin-bottom: auto
+        position: relative
+        vertical-align: top
+        background-color: transparent
+        border: none
+        cursor: pointer
+        outline: none
+
+        &:before,
+        &:after
+            content: ""
+            display: block
+            width: 15px
+            height: 3px
+            position: absolute
+            left: 50%
+            top: 50%
+            background-color: #fff
+            transform-origin: center center
+        
+        &:before
+            transform: translateX(-50%) translateY(-50%) rotate(-45deg)
+        
+        &:after
+            transform: translateX(-50%) translateY(-50%) rotate(45deg)
+
+    &__body
+        max-height: 80vh
+        padding: 1.25em 1.5em
+        color: $dark-text
+        background-color: #fff
+        overflow-y: auto
+
+        @media screen and (min-height: 520px)
+            max-height: 400px
+
+    &__footer
+        display: flex
+        align-items: center
+        justify-content: space-between
+        padding: 12px 16px
+        position: relative
+        background-color: #fff
+        color: $light-main
+        font-weight: 700
+        line-height: 1.25
+        border-top: 1px solid #dcdcdc
+
+        button
+            width: auto
+
+    &__qtd
+        display: flex
+        justify-content: space-between
+        width: 230px
+        margin-top: 10px
+        padding: 0px
+        border: none
+
+        &-btn
+            width: 40px
+            background-color: #040a3b
+            border-color: #040a3b
+
+        input
+            width: 120px
+            text-align: center
+
+    &__delete
+        background-color: $main-color
+        border-color: $main-color
+        
+
