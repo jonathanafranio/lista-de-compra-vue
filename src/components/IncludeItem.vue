@@ -117,7 +117,8 @@ export default defineComponent({
                 nome: this.nome,
                 quantidade: this.quantidade,
                 preco: 0,
-                valortotal: 0
+                valortotal: 0,
+                pego: false,
             });
 
             this.nome = '';

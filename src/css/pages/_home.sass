@@ -98,6 +98,11 @@
         padding: 5px 15px 5px 30px
         position: relative
         text-transform: capitalize
+        cursor: pointer
+
+        &.checked
+            color: $text-color
+            text-decoration: line-through
 
     &__label-prod
         color: $dark-text
@@ -112,6 +117,13 @@
             top: 50%
             transform: translateY(-50%)
             border-radius: 5px
+
+        &.checked
+            &:before
+                background: url(assets/icon-check.svg)
+                background-size: 100%
+                background-position: center
+                background-repeat: no-repeat
 
     &__checkbox
         position: absolute
