@@ -3,9 +3,8 @@
     <div class="image-bg">
       <img src="~assets/mercado.jpg" alt="Lista de compras">
     </div>
-    <ListaProdutos></ListaProdutos>
+    <ListaProdutos />
   </div>
-  <!--<router-view /> -->
 </template>
 <script>
 import ListaProdutos from 'components/ListaProdutos.vue'

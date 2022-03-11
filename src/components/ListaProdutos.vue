@@ -101,13 +101,13 @@ export default defineComponent({
 		IncludeItem,
         ModalDuplicidade
 	},
-	    data(){
+	data(){
         return {
             products: [],
             duplicidade: ''
         }
     },
-        created(){
+    created(){
         if(localStorage.getItem('productsList')!=null) {
             const localStorageProd = JSON.parse(localStorage.getItem('productsList'));
             let produtos = localStorageProd.map((p) => {
@@ -135,13 +135,11 @@ export default defineComponent({
         },
         addProduct(product){
             this.products.push(product);
-            localStorage.setItem('productsList', JSON.stringify(this.products));
         },
         removeProduct(product){
             const index = this.products.indexOf(product);
             this.products.splice(index, 1);
             this.duplicidade = ''
-            this.products.length ? localStorage.setItem('productsList', JSON.stringify(this.products)) : localStorage.clear();
         },
         requireQtd(product){
             const index = this.products.indexOf(product);
@@ -158,12 +156,10 @@ export default defineComponent({
             let precoTotal = (precoUnitario * this.products[index].quantidade).toFixed(2);
             
             this.products[index].valortotal = precoTotal;
-            localStorage.setItem('productsList', JSON.stringify(this.products));
         },
         changeStatusProd(product){
             const index = this.products.indexOf(product);
-            this.products[index].pego = !this.products[index].pego
-            localStorage.setItem('productsList', JSON.stringify(this.products));
+            this.products[index].pego = !this.products[index].pego;
         },
         fecharModalDuplicidade(change){
             let newQtd = change.newQtd
@@ -190,12 +186,12 @@ export default defineComponent({
         }
     },
     watch: {
-        //products(product){
-        //    console.log('product', product);
-        //},
-    },
-    mounted () {
-        console.log('mounted')
+        products: {
+            handler: function (){
+                this.products.length ? localStorage.setItem('productsList', JSON.stringify(this.products)) : localStorage.clear();
+            },
+            deep: true
+        }
     }
 })
 </script>
