@@ -55,7 +55,7 @@
             </ul>
 
             <footer class="footer">
-                <p>Total da compra: <strong>R${{ totalvalor }}</strong></p>
+                <p>Total da compra: <strong>{{ totalvalor }}</strong></p>
             </footer>
         </div>
         <ModalDuplicidade 
@@ -77,32 +77,22 @@ export default defineComponent({
 		IncludeItem,
         ModalDuplicidade
 	},
-	data(){
+	    data(){
         return {
             products: [],
-            totalprecos: [],
-            totalvalor: 0,
             duplicidade: ''
         }
     },
-	created(){
-		if(localStorage.getItem('productsList')!=null) {
+    created(){
+        if(localStorage.getItem('productsList')!=null) {
             this.products = JSON.parse(localStorage.getItem('productsList'));
-
-            let precototais = this.products.map((prod) => +prod.valortotal);
-            this.totalprecos = precototais;
         }
-
-        if(localStorage.getItem('totalvalor')!=null) {
-            this.totalvalor = localStorage.getItem('totalvalor');
-        }
-	},
-	methods: {
+    },
+    methods: {
         hasProd(product){
             const nameNewProd = product.nome.toLowerCase();
             
             const hastThisProd = this.products.findIndex((prod)=> prod.nome.toLowerCase() === nameNewProd);
-
             if(hastThisProd < 0) {
                 this.addProduct(product);
             } else {
@@ -114,73 +104,51 @@ export default defineComponent({
                 navigator.vibrate(400)
             }
         },
-    	addProduct(product){
-    		this.products.push(product);
-    		localStorage.setItem('productsList', JSON.stringify(this.products));
-    	},
-    	removeProduct(index){
-    		this.products.splice(index, 1);
-    		this.totalprecos.splice(index, 1);
+        addProduct(product){
+            this.products.push(product);
+            localStorage.setItem('productsList', JSON.stringify(this.products));
+        },
+        removeProduct(index){
+            this.products.splice(index, 1);
             this.duplicidade = ''
-
-			if(this.products.length) {
-				//alert('ainda tem produto(s)');
-				localStorage.setItem('productsList', JSON.stringify(this.products));
-				this.totalvalor = this.totalprecos.reduce((total,num) => total + num).toFixed(2);
-
-				localStorage.setItem('totalvalor', this.totalvalor);
-			} else {
-				this.totalvalor = 0;
-				//alert('NAO TEM PRODUTOS!!!');
-				localStorage.clear();
-			}
-    	},
-		requireQtd(index){
-			const qdtValue = this.products[index].quantidade;
-			const regexValid = /\d/ig.test(qdtValue);
-			! regexValid ? this.products[index].quantidade = 1 : this.products[index].quantidade;
-
-			qdtValue === '' ? this.products[index].quantidade = 1 : qdtValue;
-			qdtValue < 1 ? this.products[index].quantidade = 1 : qdtValue;
-
-			this.incluirPreco(index);
-		},
-		incluirPreco(index){
-			let precoUnitario = this.products[index].preco;
-			let precoTotal = (precoUnitario * this.products[index].quantidade).toFixed(2);
-
-			this.products[index].valortotal = precoTotal;
-
-			let totalproduto = this.products.map((product) => +product.valortotal);
-
-			this.totalprecos = totalproduto;
-			
-			let total = totalproduto.reduce((total,num) => total + num);
-
-			this.totalvalor = total.toFixed(2);
-
-			localStorage.setItem('productsList', JSON.stringify(this.products));
-			localStorage.setItem('totalvalor', this.totalvalor);
-		},
+            this.products.length ? localStorage.setItem('productsList', JSON.stringify(this.products)) : localStorage.clear();
+        },
+        requireQtd(index){
+            const qdtValue = this.products[index].quantidade;
+            const regexValid = /\d/ig.test(qdtValue);
+            ! regexValid ? this.products[index].quantidade = 1 : this.products[index].quantidade;
+            qdtValue === '' ? this.products[index].quantidade = 1 : qdtValue;
+            qdtValue < 1 ? this.products[index].quantidade = 1 : qdtValue;
+            this.incluirPreco(index);
+        },
+        incluirPreco(index){
+            let precoUnitario = this.products[index].preco;
+            let precoTotal = (precoUnitario * this.products[index].quantidade).toFixed(2);
+            
+            this.products[index].valortotal = precoTotal;
+            localStorage.setItem('productsList', JSON.stringify(this.products));
+        },
         fecharModalDuplicidade(change){
             let newQtd = change.newQtd
             let currentArray = change.currentArray
             let qtdAtual = +this.products[currentArray].quantidade
-
             if(newQtd != qtdAtual) {
                 this.products[currentArray].quantidade = newQtd
-
                 this.requireQtd(currentArray)
             }
-
             this.duplicidade = ''
         }
-	},
-	computed: {
-		allProducts(){
-		return this.products;
-		}
-	},
+    },
+    computed: {
+        totalvalor(){
+            let totalproduto = this.products.map((product) => +product.valortotal);
+            let total = this.products.length ? totalproduto.reduce((total,num) => total + num) : 0;
+            return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+        },
+        allProducts(){
+            return this.products;
+        }
+    },
 	watch: {
 		//products(product){
 		//    console.log('product', product);
