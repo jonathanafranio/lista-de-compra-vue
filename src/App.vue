@@ -3,7 +3,7 @@
     <div class="image-bg">
         <img src="./assets/mercado.jpg" alt="Lista de compras">
     </div>
-    <ListaProdutos></ListaProdutos>
+    <ListaProdutos />
   </div>
 </template>
 
