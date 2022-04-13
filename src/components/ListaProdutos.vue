@@ -259,56 +259,37 @@ export default {
             return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
         },
         produtosNaoPego(){
-            if(this.order === 'nameAsc') {
-                return this.orderByNameAsc().filter((p) => ! p.pego)
-            }
-            else if(this.order === 'nameDesc') {
-                return this.orderByNameDesc().filter((p) => ! p.pego)
-            }
-            else if(this.order === 'priceAsc'){
-                return this.orderBypriceAsc().filter((p) => ! p.pego)
-            }
-            else if(this.order === 'priceDesc'){
-                return this.orderBypriceDesc().filter((p) => ! p.pego)
-            }
-            else if(this.order === 'qtdAsc'){
-                return this.orderByQtdAsc().filter((p) => ! p.pego)
-            }
-            else if(this.order === 'qtdDesc'){
-                return this.orderByQtdDesc().filter((p) => ! p.pego)
-            }
-            else {
-                return this.products.filter((p) => ! p.pego)
-            }
+            return this.products.filter((p) => ! p.pego)
         },
         produtosPego(){
-            if(this.order === 'nameAsc') {
-                return this.orderByNameAsc().filter((p) => p.pego)
-            }
-            else if(this.order === 'nameDesc') {
-                return this.orderByNameDesc().filter((p) => p.pego)
-            }
-            else if(this.order === 'priceAsc'){
-                return this.orderBypriceAsc().filter((p) => p.pego)
-            }
-            else if(this.order === 'priceDesc'){
-                return this.orderBypriceDesc().filter((p) => p.pego)
-            }
-            else if(this.order === 'qtdAsc'){
-                return this.orderByQtdAsc().filter((p) => p.pego)
-            }
-            else if(this.order === 'qtdDesc'){
-                return this.orderByQtdDesc().filter((p) => p.pego)
-            }
-            else {
-                return this.products.filter((p) => p.pego)
-            }
+            return this.products.filter((p) => p.pego)
         }
 
     },
     watch: {
         order() {
             console.log("mudou a ordem")
+            if(this.order === 'nameAsc') {
+                this.products = this.orderByNameAsc()
+            }
+            else if(this.order === 'nameDesc') {
+                this.products = this.orderByNameDesc()
+            }
+            else if(this.order === 'priceAsc'){
+                this.products = this.orderBypriceAsc()
+            }
+            else if(this.order === 'priceDesc'){
+                this.products = this.orderBypriceDesc()
+            }
+            else if(this.order === 'qtdAsc'){
+                this.products = this.orderByQtdAsc()
+            }
+            else if(this.order === 'qtdDesc'){
+                this.products = this.orderByQtdDesc()
+            }
+            else {
+                this.products = this.orderDefault()
+            }
         },
         products: {
             handler: function (){
