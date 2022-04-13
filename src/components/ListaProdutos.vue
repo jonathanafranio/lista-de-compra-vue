@@ -189,18 +189,12 @@ export default {
 
             if(newQtd != qtdAtual) {
                 this.products[currentArray].quantidade = newQtd
-
                 this.requireQtd(currentArray)
             }
-
             this.duplicidade = ''
         },
         orderDefault(){
-            const prodIdOrder = this.products.sort((a,b) => {
-                const idA = a.id;
-                const idB = b.id;
-                return idA - idB
-            })
+            const prodIdOrder = this.products.sort((a,b) => a.id - b.id)
             return prodIdOrder
         },
         orderByNameAsc(){
@@ -208,7 +202,6 @@ export default {
                 const nameA = a.nome.toLowerCase();
                 const nameB = b.nome.toLowerCase();
                 return nameA.localeCompare(nameB)
-                //return nameA < nameB ? -1 : nameA >nameB ? 1 : 0
             })
             return prodNameAsc
         },
@@ -216,40 +209,19 @@ export default {
             return this.orderByNameAsc().reverse()
         },
         orderBypriceAsc(){
-            const prodPriceAsc = this.products.sort((a,b) => {
-                const priceA = a.preco;
-                const priceB = b.preco;
-                return priceA - priceB
-            })
+            const prodPriceAsc = this.products.sort((a,b) => a.preco - b.preco);
             return prodPriceAsc
         },
         orderBypriceDesc() {
             return this.orderBypriceAsc().reverse()
         },
         orderByQtdAsc(){
-            const prodQtdAsc = this.products.sort((a,b) => {
-                const qtdA = a.quantidade;
-                const qtdB = b.quantidade;
-                return qtdA - qtdB
-            })
+            const prodQtdAsc = this.products.sort((a,b) => a.quantidade - b.quantidade)
             return prodQtdAsc
         },
         orderByQtdDesc(){
             return this.orderByQtdAsc().reverse()
-        },
-        orderProd(t){
-            const prodOrder = {
-                default: this.orderDefault(),
-                nameAsc: this.orderByNameAsc(),
-                nameDesc: this.orderByNameDesc(),
-                priceAsc: this.orderBypriceAsc(),
-                priceDesc: this.orderBypriceDesc(),
-                qtdAsc: this.orderByQtdAsc(),
-                qtdDesc: this.orderByQtdDesc()
-            }
-            return prodOrder[t] || prodOrder.default
         }
-
     },
     computed: {
         totalvalor(){
@@ -268,27 +240,27 @@ export default {
     },
     watch: {
         order() {
-            console.log("mudou a ordem")
-            if(this.order === 'nameAsc') {
-                this.products = this.orderByNameAsc()
-            }
-            else if(this.order === 'nameDesc') {
-                this.products = this.orderByNameDesc()
-            }
-            else if(this.order === 'priceAsc'){
-                this.products = this.orderBypriceAsc()
-            }
-            else if(this.order === 'priceDesc'){
-                this.products = this.orderBypriceDesc()
-            }
-            else if(this.order === 'qtdAsc'){
-                this.products = this.orderByQtdAsc()
-            }
-            else if(this.order === 'qtdDesc'){
-                this.products = this.orderByQtdDesc()
-            }
-            else {
-                this.products = this.orderDefault()
+            switch (this.order) {
+                case 'nameAsc':
+                    this.products = this.orderByNameAsc()
+                    break;
+                case 'nameDesc':
+                    this.products = this.orderByNameDesc()
+                    break;
+                case 'priceAsc':
+                    this.products = this.orderBypriceAsc()
+                    break;
+                case 'priceDesc':
+                    this.products = this.orderBypriceDesc()
+                    break;
+                case 'qtdAsc':
+                    this.products = this.orderByQtdAsc()
+                    break;
+                case 'qtdDesc':
+                    this.products = this.orderByQtdDesc()
+                    break;
+                default:
+                    this.products = this.orderDefault()
             }
         },
         products: {
