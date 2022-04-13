@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import ListaProdutos from './components/ListaProdutos.vue'
+import ListaProdutos from './components/ListaProdutos'
 
 export default {
   name: 'App',

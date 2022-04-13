@@ -3,6 +3,21 @@
         <div class="container">
             <IncludeItem v-on:add-prod="hasProd"></IncludeItem>
             <hr>
+            <div class="sort" v-if="products.length > 1">
+                <div class="sort__select">
+                    <svg viewBox="0 0 15 15" class="sort__icon"><path d="M7.36 2.988a.645.645 0 01-.02.912c-.271.26-.7.26-.972 0L4.82 2.415v10.68a.687.687 0 11-1.375 0V2.415L1.895 3.9c-.271.26-.7.26-.971 0a.645.645 0 01-.02-.912l.02-.02L3.646.36c.272-.26.7-.26.972 0L7.34 2.969zm6.875 8.413a.645.645 0 01-.02.02l-2.722 2.608c-.272.26-.7.26-.972 0L7.799 11.42a.645.645 0 010-.931c.271-.26.7-.26.972 0l1.549 1.483V1.293a.687.687 0 111.375 0v10.68l1.548-1.484c.272-.26.7-.26.972 0a.645.645 0 01.02.912z" fill="currentColor"></path></svg>
+                    <select name="" id="" v-model="order">
+                        <option value="default">Ordenação padrão</option>
+                        <option value="nameAsc">Ordenação por Nome Crescente (A - Z)</option>
+                        <option value="nameDesc">Ordenação por Nome Decrescente (Z - A)</option>
+                        <option value="priceAsc">Ordenação por Preços Menores</option>
+                        <option value="priceDesc">Ordenação por Preço Maiores</option>
+                        <option value="qtdAsc">Ordenação por Quantidade Menor</option>
+                        <option value="qtdDesc">Ordenação por Quantidade Maior</option>
+                    </select>
+                </div>
+                <hr>
+            </div>
             <ul class="list mx-12">
                 <li v-if="products.length <= 0">
                     <h3>Sua lista está vazia.</h3>
@@ -103,14 +118,16 @@ export default {
     data(){
         return {
             products: [],
-            duplicidade: ''
+            duplicidade: '',
+            order: 'default'
         }
     },
     created(){
         if(localStorage.getItem('productsList')!=null) {
             const localStorageProd = JSON.parse(localStorage.getItem('productsList'));
 
-            let produtos = localStorageProd.map((p) => {
+            let produtos = localStorageProd.map((p, i) => {
+                p.id == undefined ? p.id = i+1 : p.id;
                 p.pego == undefined ? p.pego = false : p.pego;
                 return p;
             });
@@ -123,6 +140,8 @@ export default {
             const hastThisProd = this.products.findIndex((prod)=> prod.nome.toLowerCase() === nameNewProd);
 
             if(hastThisProd < 0) {
+                const newId = this.products.length + 1
+                product.id = newId
                 this.addProduct(product);
             } else {
                 this.duplicidade = {
@@ -175,7 +194,62 @@ export default {
             }
 
             this.duplicidade = ''
+        },
+        orderDefault(){
+            const prodIdOrder = this.products.sort((a,b) => {
+                const idA = a.id;
+                const idB = b.id;
+                return idA - idB
+            })
+            return prodIdOrder
+        },
+        orderByNameAsc(){
+            const prodNameAsc = this.products.sort((a,b) => {
+                const nameA = a.nome.toLowerCase();
+                const nameB = b.nome.toLowerCase();
+                return nameA.localeCompare(nameB)
+                //return nameA < nameB ? -1 : nameA >nameB ? 1 : 0
+            })
+            return prodNameAsc
+        },
+        orderByNameDesc(){
+            return this.orderByNameAsc().reverse()
+        },
+        orderBypriceAsc(){
+            const prodPriceAsc = this.products.sort((a,b) => {
+                const priceA = a.preco;
+                const priceB = b.preco;
+                return priceA - priceB
+            })
+            return prodPriceAsc
+        },
+        orderBypriceDesc() {
+            return this.orderBypriceAsc().reverse()
+        },
+        orderByQtdAsc(){
+            const prodQtdAsc = this.products.sort((a,b) => {
+                const qtdA = a.quantidade;
+                const qtdB = b.quantidade;
+                return qtdA - qtdB
+            })
+            return prodQtdAsc
+        },
+        orderByQtdDesc(){
+            return this.orderByQtdAsc().reverse()
+        },
+        orderProd(t){
+            const prodOrder = {
+                default: this.orderDefault(),
+                nameAsc: this.orderByNameAsc(),
+                nameDesc: this.orderByNameDesc(),
+                priceAsc: this.orderBypriceAsc(),
+                priceDesc: this.orderBypriceDesc(),
+                qtdAsc: this.orderByQtdAsc(),
+                qtdDesc: this.orderByQtdDesc()
+            }
+            return prodOrder[t] || prodOrder.default
         }
+
     },
     computed: {
         totalvalor(){
@@ -185,13 +259,57 @@ export default {
             return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
         },
         produtosNaoPego(){
-            return this.products.filter((p) => ! p.pego)
+            if(this.order === 'nameAsc') {
+                return this.orderByNameAsc().filter((p) => ! p.pego)
+            }
+            else if(this.order === 'nameDesc') {
+                return this.orderByNameDesc().filter((p) => ! p.pego)
+            }
+            else if(this.order === 'priceAsc'){
+                return this.orderBypriceAsc().filter((p) => ! p.pego)
+            }
+            else if(this.order === 'priceDesc'){
+                return this.orderBypriceDesc().filter((p) => ! p.pego)
+            }
+            else if(this.order === 'qtdAsc'){
+                return this.orderByQtdAsc().filter((p) => ! p.pego)
+            }
+            else if(this.order === 'qtdDesc'){
+                return this.orderByQtdDesc().filter((p) => ! p.pego)
+            }
+            else {
+                return this.products.filter((p) => ! p.pego)
+            }
         },
         produtosPego(){
-            return this.products.filter((p) => p.pego)
+            if(this.order === 'nameAsc') {
+                return this.orderByNameAsc().filter((p) => p.pego)
+            }
+            else if(this.order === 'nameDesc') {
+                return this.orderByNameDesc().filter((p) => p.pego)
+            }
+            else if(this.order === 'priceAsc'){
+                return this.orderBypriceAsc().filter((p) => p.pego)
+            }
+            else if(this.order === 'priceDesc'){
+                return this.orderBypriceDesc().filter((p) => p.pego)
+            }
+            else if(this.order === 'qtdAsc'){
+                return this.orderByQtdAsc().filter((p) => p.pego)
+            }
+            else if(this.order === 'qtdDesc'){
+                return this.orderByQtdDesc().filter((p) => p.pego)
+            }
+            else {
+                return this.products.filter((p) => p.pego)
+            }
         }
+
     },
     watch: {
+        order() {
+            console.log("mudou a ordem")
+        },
         products: {
             handler: function (){
                 this.products.length ? localStorage.setItem('productsList', JSON.stringify(this.products)) : localStorage.clear();
