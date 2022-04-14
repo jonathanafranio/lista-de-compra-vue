@@ -132,6 +132,7 @@ export default {
                 return p;
             });
             this.products = produtos;
+            this.orderDefault()
         }
     },
     methods: {
