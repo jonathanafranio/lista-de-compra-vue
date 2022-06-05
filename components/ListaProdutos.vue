@@ -171,7 +171,7 @@ export default {
     },
     removeProduct(product) {
       const { id } = product
-      this.$store.commit("list/removeProd", { id })
+      this.$store.dispatch('list/actions_removeProd', { id })
       this.duplicidade = "";
     },
     updateProductQtd(e) {
@@ -198,7 +198,7 @@ export default {
     changeStatusProd(product) {
       const { id, pego } = product;
       const changePego = !pego;
-      this.$store.commit("list/edit_productStage", {
+      this.$store.dispatch('list/action_changeStatusProd', {
         obj_prod: {
           id,
           pego: changePego,

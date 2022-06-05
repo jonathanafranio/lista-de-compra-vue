@@ -30,8 +30,8 @@ export const mutations = {
     state.products[indexProd].preco = preco
     state.products[indexProd].valortotal = valortotal
   },
-  edit_productStage(state, { obj_prod }) {
-    const { id, pego } = obj_prod
+  edit_productStage(state, { obj }) {
+    const { id, pego } = obj
     const indexProd = state.products.findIndex((prod) => prod.id === id)
     if (indexProd < 0) return
     state.products[indexProd].pego = pego
@@ -85,14 +85,18 @@ export const actions = {
   },
   loadProds({ commit, state }, { db }) {
     const storeName = state.storeName
+    const products = state.products
     let objectStore = db.transaction(storeName).objectStore(storeName)
     objectStore.openCursor().onsuccess = (e) => {
-      let products = []
       const cursor = e.target.result
       
       if(cursor) {
         const obj_prod = cursor.value
-        commit('add_product', { obj_prod })
+        const { id } =  obj_prod
+        const hasProd = products.filter((p) => p.id === id)
+        if(hasProd.length < 1) {
+          commit('add_product', { obj_prod })
+        }
         cursor.continue()
       }
     }
@@ -178,6 +182,46 @@ export const actions = {
       requestUpdate.onerror = function (event) {
         console.log('Ocorreu um erro ao salvar o contato.', event);
       }
+    }
+  },
+  action_changeStatusProd({ commit, state }, { obj_prod }){
+    const db = state.db
+    const storeName = state.storeName
+    const { id, pego } = obj_prod
+
+    const transactionEdit = db.transaction([storeName], "readwrite");
+    const objectStore = transactionEdit.objectStore(storeName)
+    const request = objectStore.get(id)
+
+    request.onerror = function (event) {
+      console.log('Ocorreu um erro ao buscar o contato.');
+    }
+    request.onsuccess = function (event) {
+      let prod = event.target.result
+      prod.pego = pego
+      const productObj = {
+        id: id,
+        pego: pego
+      }
+      const requestUpdate = objectStore.put(prod)
+
+      requestUpdate.onsuccess = function (event) {
+        commit('edit_productStage', { obj: productObj })
+        console.log('produto editado', event)
+      }
+      requestUpdate.onerror = function (event) {
+        console.log('Ocorreu um erro ao salvar o contato.', event);
+      }
+    }
+  },
+  actions_removeProd({ commit, state }, { id }){
+    const db = state.db
+    const storeName = state.storeName
+    const transactionRmm = db.transaction([storeName], 'readwrite')
+    const objectStore = transactionRmm.objectStore(storeName)
+    const request = objectStore.delete(id)
+    transactionRmm.oncomplete = (e) => {
+      commit('removeProd', { id })
     }
   }
 }
