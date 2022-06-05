@@ -46,7 +46,9 @@ export default {
       })
     },
     remover(){
-      this.$emit('remove-modal', this.duplicidade.currentArray)
+      const indexProd = this.duplicidade.currentArray
+      const product = this.$store.state.list.products[indexProd]
+      this.$emit('remove-modal', product)
     },
     min(){
       this.newQtd < 1 ? this.newQtd = 1 : this.newQtd

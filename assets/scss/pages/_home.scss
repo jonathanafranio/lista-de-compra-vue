@@ -222,12 +222,6 @@
         }
     }
 
-    &__price-total {
-        &:before {
-            content: 'R$';
-        }
-    }
-
     &__title {
         .list__price-total {
             &:before {

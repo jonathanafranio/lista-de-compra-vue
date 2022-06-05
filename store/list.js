@@ -28,16 +28,29 @@ export const mutations = {
   add_product(state, { obj_prod }) {
     state.products.push(obj_prod)
   },
-  edit_product(state, { obj_prod }) {
-    const { id, pego, preco, quantidade } = obj_prod
+  edit_productQtd(state, { obj_prod }) {
+    const { id, quantidade } = obj_prod
+    const indexProd = state.products.findIndex((prod) => prod.id === id)
+    if (indexProd < 0) return
+    const price = state.products[indexProd].preco
+    state.products[indexProd].quantidade = quantidade
+    state.products[indexProd].valortotal = (price * quantidade).toFixed(2)
+  },
+  edit_productPrice(state, { obj_prod }) {
+    const { id, preco } = obj_prod
+    const indexProd = state.products.findIndex((prod) => prod.id === id)
+    if (indexProd < 0) return
+    const quantidade = state.products[indexProd].quantidade
+    state.products[indexProd].preco = preco
+    state.products[indexProd].valortotal = (preco * quantidade).toFixed(2)
+  },
+  edit_productStage(state, { obj_prod }) {
+    const { id, pego } = obj_prod
     const indexProd = state.products.findIndex((prod) => prod.id === id)
     if (indexProd < 0) return
     state.products[indexProd].pego = pego
-    state.products[indexProd].preco = preco
-    state.products[indexProd].quantidade = quantidade
-    state.products[indexProd].valortotal = (preco * quantidade).toFixed(2)
   },
-  removeProd(state, {id_prod}){
+  removeProd(state, {id}){
     const indexProd = state.products.findIndex((prod) => prod.id === id)
     if (indexProd < 0) return
     state.products.splice(indexProd, 1)

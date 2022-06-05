@@ -1,133 +1,146 @@
 <template lang="pug">
-  div
-    .container
-      IncludeItem(v-on:show-duplicity="hasDuplicity")
-      //IncludeItem(v-on:add-prod="hasProd")
+div
+  .container
+    IncludeItem(v-on:show-duplicity="hasDuplicity")
+    //IncludeItem(v-on:add-prod="hasProd")
+    hr
+    .sort(v-if="$store.state.list.products.length > 1")
+      .sort__select
+        svg.sort__icon(viewBox="0 0 15 15")
+          path(
+            d="M7.36 2.988a.645.645 0 01-.02.912c-.271.26-.7.26-.972 0L4.82 2.415v10.68a.687.687 0 11-1.375 0V2.415L1.895 3.9c-.271.26-.7.26-.971 0a.645.645 0 01-.02-.912l.02-.02L3.646.36c.272-.26.7-.26.972 0L7.34 2.969zm6.875 8.413a.645.645 0 01-.02.02l-2.722 2.608c-.272.26-.7.26-.972 0L7.799 11.42a.645.645 0 010-.931c.271-.26.7-.26.972 0l1.549 1.483V1.293a.687.687 0 111.375 0v10.68l1.548-1.484c.272-.26.7-.26.972 0a.645.645 0 01.02.912z",
+            fill="currentColor"
+          )
+
+        select(v-model="order")
+          option(value="default") Ordenação padrão
+          option(value="nameAsc") Ordenação por Nome Crescente (A - Z)
+          option(value="nameDesc") Ordenação por Nome Decrescente (Z - A)
+          option(value="priceAsc") Ordenação por Preços Menores
+          option(value="priceDesc") Ordenação por Preço Maiores
+          option(value="qtdAsc") Ordenação por Quantidade Menor
+          option(value="qtdDesc") Ordenação por Quantidade Maior
+
       hr
-      div.sort(v-if="$store.state.list.products.length > 1")
-        div.sort__select
-          svg.sort__icon(viewBox="0 0 15 15")
-            path(d="M7.36 2.988a.645.645 0 01-.02.912c-.271.26-.7.26-.972 0L4.82 2.415v10.68a.687.687 0 11-1.375 0V2.415L1.895 3.9c-.271.26-.7.26-.971 0a.645.645 0 01-.02-.912l.02-.02L3.646.36c.272-.26.7-.26.972 0L7.34 2.969zm6.875 8.413a.645.645 0 01-.02.02l-2.722 2.608c-.272.26-.7.26-.972 0L7.799 11.42a.645.645 0 010-.931c.271-.26.7-.26.972 0l1.549 1.483V1.293a.687.687 0 111.375 0v10.68l1.548-1.484c.272-.26.7-.26.972 0a.645.645 0 01.02.912z" fill="currentColor")
-          
-          select(v-model="order")
-            option(value="default") Ordenação padrão
-            option(value="nameAsc") Ordenação por Nome Crescente (A - Z)
-            option(value="nameDesc") Ordenação por Nome Decrescente (Z - A)
-            option(value="priceAsc") Ordenação por Preços Menores
-            option(value="priceDesc") Ordenação por Preço Maiores
-            option(value="qtdAsc") Ordenação por Quantidade Menor
-            option(value="qtdDesc") Ordenação por Quantidade Maior
+    ul.list.mx-12
+      li(v-if="$store.state.list.products.length <= 0")
+        h3 Sua lista está vazia.
 
-        hr
-      ul.list.mx-12
-        li(v-if="$store.state.list.products.length <= 0")
-          h3 Sua lista está vazia.
+      li.list__prod.list__title(v-else)
+        strong.list__name-prod.mx-3 Produto:
+        strong.list__qtd-prod.col.mx-2 Qtd:
+        strong.list__price-uni.col.mx-3 Preço Unitário:
+        strong.list__price-total.col.mx-3 Total:
+        .list__remve-product.col.mx-1
 
-        li.list__prod.list__title(v-else)
-          strong.list__name-prod.mx-3 Produto:
-          strong.list__qtd-prod.col.mx-2 Qtd:
-          strong.list__price-uni.col.mx-3 Preço Unitário:
-          strong.list__price-total.col.mx-3 Total:
-          div.list__remve-product.col.mx-1
+      li.list__prod(
+        v-for="(product, index) in produtosNaoPego",
+        v-bind:key="`a-${index}`",
+        v-bind:id="'produto-nao-' + index"
+      )
+        span.list__name-prod.list__label-prod.mx-3.sm-5.ph-2(
+          v-on:click="changeStatusProd(product)"
+        ) {{ product.nome }}
 
-        li.list__prod(
-          v-for="(product, index) in produtosNaoPego" 
-          v-bind:key="`a-${index}`" 
-          v-bind:id="'produto-nao-'+index"
-        )
-          span.list__name-prod.list__label-prod.mx-3.sm-5.ph-2(v-on:click="changeStatusProd(product)") {{ product.nome }}
+        .list__qtd-prod.col.mx-2.sm-1.ph-1
+          input(
+            type="number",
+            name="quantidade",
+            v-bind:id="'qtd-n-' + index",
+            :data-id-product="product.id",
+            :value="product.quantidade",
+            @input="updateProductQtd",
+            min="1",
+            required
+          )
+        .list__price-uni.col.mx-3.sm-2.ph-1
+          input(
+            type="number",
+            pattern="[0-9]+([,\.][0-2]+)?",
+            name="price-product",
+            :data-id-product="product.id",
+            placeholder="Valor (R$):",
+            step="0.01",
+            v-bind:id="'price-n-' + index",
+            :value="product.preco",
+            @input="updateProductPrice"
+          ) 
 
-          div.list__qtd-prod.col.mx-2.sm-1.ph-1
-            input(
-              type="number" 
-              v-bind:id="'qtd-n-'+index" 
-              v-model="product.quantidade" 
-              v-on:keyup="incluirPreco(product)" 
-              v-on:blur="requireQtd(product)" 
-              min="1" 
-              required
-            )
-          div.list__price-uni.col.mx-3.sm-2.ph-1
-            input(
-              type="number" 
-              pattern="[0-9]+([,\.][0-2]+)?" 
-              name="price-product" 
-              placeholder="Valor (R$):" 
-              step="0.01" 
-              v-bind:id="'price-n-'+index" 
-              v-on:keyup="incluirPreco(product)" 
-              v-model="product.preco"
-            )
-              
+        .list__price-total.col.mx-3.sm-3.ph-1 {{ totalReal(product.valortotal) }}
 
-          div.list__price-total.col.mx-3.sm-3.ph-1 {{ product.valortotal }}
+        .list__remve-product.col.mx-1.sm-1.ph-1
+          button.list__btn(
+            button,
+            type="button",
+            name="button",
+            v-on:click.prevent="removeProduct(product)",
+            title="Remover"
+          )
+            svg(xmlns="http://www.w3.org/2000/svg", viewBox="0 0 448 512")
+              path(
+                fill="currentColor",
+                d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z"
+              )
 
-          div.list__remve-product.col.mx-1.sm-1.ph-1
-            button.list__btn(
-              button type="button" 
-              name="button" 
-              v-on:click.prevent="removeProduct(product)" 
-              title="Remover"
-            )
-              svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
-                path(
-                  fill="currentColor" 
-                  d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z")
+      li.list__prod(
+        v-for="(product, index) in produtosPego",
+        v-bind:key="`b-${index}`",
+        v-bind:id="'produto-pego-' + index"
+      )
+        span.list__name-prod.list__label-prod.checked.mx-3.sm-5.ph-2(
+          v-on:click="changeStatusProd(product)"
+        ) {{ product.nome }}
 
-        li.list__prod(
-          v-for="(product, index) in produtosPego" 
-          v-bind:key="`b-${index}`" 
-          v-bind:id="'produto-pego-'+index"
-        )
-          span.list__name-prod.list__label-prod.checked.mx-3.sm-5.ph-2(v-on:click="changeStatusProd(product)") {{ product.nome }}
+        .list__qtd-prod.col.mx-2.sm-1.ph-1
+          input(
+            type="number",
+            name="quantidade",
+            v-bind:id="'qtd-n-' + index",
+            :data-id-product="product.id",
+            :value="product.quantidade",
+            @input="updateProductQtd",
+            min="1",
+            required
+          )
+        .list__price-uni.col.mx-3.sm-2.ph-1
+          input(
+            type="number",
+            pattern="[0-9]+([,\.][0-2]+)?",
+            name="price-product",
+            :data-id-product="product.id",
+            placeholder="Valor (R$):",
+            step="0.01",
+            v-bind:id="'price-n-' + index",
+            :value="product.preco",
+            @input="updateProductPrice"
+          )
 
-          div.list__qtd-prod.col.mx-2.sm-1.ph-1
-            input(
-              type="number" 
-              v-bind:id="'qtd'+index" 
-              v-on:keyup="incluirPreco()" 
-              v-on:blur="requireQtd(product)" 
-              min="1" 
-              required
-            )
-          div.list__price-uni.col.mx-3.sm-2.ph-1
-            input(
-              type="number" 
-              pattern="[0-9]+([,\.][0-2]+)?" 
-              name="price-product" 
-              placeholder="Valor (R$):" 
-              step="0.01" 
-              v-bind:id="'price-'+index" 
-              v-on:keyup="incluirPreco(product)" 
-              v-model="product.preco"
-            )
-              
+        .list__price-total.col.mx-3.sm-3.ph-1 {{ totalReal(product.valortotal) }}
 
-          div.list__price-total.col.mx-3.sm-3.ph-1 {{ product.valortotal }}
+        .list__remve-product.col.mx-1.sm-1.ph-1
+          button.list__btn(
+            button,
+            type="button",
+            name="button",
+            v-on:click.prevent="removeProduct(product)",
+            title="Remover"
+          )
+            svg(xmlns="http://www.w3.org/2000/svg", viewBox="0 0 448 512")
+              path(
+                fill="currentColor",
+                d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z"
+              )
 
-          div.list__remve-product.col.mx-1.sm-1.ph-1
-            button.list__btn(
-              button type="button" 
-              name="button" 
-              v-on:click.prevent="removeProduct(product)" 
-              title="Remover"
-            )
-              svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
-                path(
-                  fill="currentColor" 
-                  d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z")
-        
-      footer.footer
-        p Total da compra: 
-          strong {{ totalvalor }}
+    footer.footer
+      p Total da compra:
+        strong {{ totalvalor }}
 
-    ModalDuplicidade(
-      v-if="duplicidade" 
-      :duplicidade="duplicidade" 
-      v-on:alter-qdt="fecharModalDuplicidade" 
-      v-on:remove-modal="removeProduct"
-    )
-
+  ModalDuplicidade(
+    v-if="duplicidade",
+    :duplicidade="duplicidade",
+    v-on:alter-qdt="fecharModalDuplicidade",
+    v-on:remove-modal="removeProduct"
+  )
 </template>
 
 <script>
@@ -138,11 +151,10 @@ import ModalDuplicidade from "@/components/ModalDuplicidade";
 export default {
   components: {
     IncludeItem,
-    ModalDuplicidade
+    ModalDuplicidade,
   },
   data() {
     return {
-      //products: [],
       duplicidade: "",
       order: "default",
     };
@@ -160,59 +172,62 @@ export default {
     //}
   },
   methods: {
-    hasDuplicity(duplicity){
-      this.duplicidade = duplicity
-      navigator.vibrate(400)
+    hasDuplicity(duplicity) {
+      this.duplicidade = duplicity;
+      navigator.vibrate(400);
     },
     removeProduct(product) {
-      const index = this.products.indexOf(product);
-      this.products.splice(index, 1);
+      const { id } = product
+      this.$store.commit("list/removeProd", { id })
       this.duplicidade = "";
     },
-    requireQtd(product) {
-      console.log({ e })
-      const listProducts = this.$store.state.list.products
-      const index = listProducts.indexOf(product);
-      const qdtValue = listProducts[index].quantidade;
-      const regexValid = /\d/gi.test(qdtValue);
-      !regexValid ? listProducts[index].quantidade = 1 : listProducts[index].quantidade;
+    updateProductQtd(e) {
+      const { value, dataset } = e.target;
+      const idProd = +dataset.idProduct;
 
-      qdtValue === "" ? listProducts[index].quantidade = 1 : qdtValue < 1 ? listProducts[index].quantidade = 1 : qdtValue;
-
-      this.incluirPreco(product);
+      this.$store.commit("list/edit_productQtd", {
+        obj_prod: {
+          id: idProd,
+          quantidade: value,
+        },
+      });
     },
-    incluirPreco(product) {
-      console.log({ product })
-      this.$store.commit('list/edit_product', {
-        obj_prod: product
-      })
-      //let precoTotal = (
-      //  precoUnitario * listProducts[index].quantidade
-      //).toFixed(2);
-
-      //listProducts.valortotal = precoTotal;
+    updateProductPrice(e) {
+      const { value, dataset } = e.target;
+      const idProd = +dataset.idProduct;
+      this.$store.commit("list/edit_productPrice", {
+        obj_prod: {
+          id: idProd,
+          preco: value,
+        },
+      });
     },
     changeStatusProd(product) {
-      const index = this.products.indexOf(product);
-      this.products[index].pego = !this.products[index].pego;
+      const { id, pego } = product;
+      const changePego = !pego;
+      this.$store.commit("list/edit_productStage", {
+        obj_prod: {
+          id,
+          pego: changePego,
+        },
+      });
     },
     fecharModalDuplicidade(change) {
       let newQtd = change.newQtd;
       let currentArray = change.currentArray;
-      let qtdAtual = +this.products[currentArray].quantidade;
+      let qtdAtual = +this.$store.state.list.products[currentArray].quantidade;
 
-      if (newQtd != qtdAtual) {
-        this.products[currentArray].quantidade = newQtd;
-        this.requireQtd(this.products[currentArray]);
+      if(newQtd != qtdAtual) {
+        this.$store.commit("list/edit_productQtd", {
+          obj_prod: {
+            id: this.$store.state.list.products[currentArray].id,
+            quantidade: newQtd,
+          }
+        })
       }
       this.duplicidade = "";
     },
-    orderDefault() {
-      const prodIdOrder = this.products.sort((a, b) => a.id - b.id);
-      return prodIdOrder;
-    },
     orderByNameAsc(arrProd) {
-      console.log({ arrProd })
       const prodNameAsc = arrProd.sort((a, b) => {
         const nameA = a.nome.toLowerCase();
         const nameB = b.nome.toLowerCase();
@@ -237,7 +252,7 @@ export default {
     orderByQtdDesc(arrProd) {
       return this.orderByQtdAsc(arrProd).reverse();
     },
-    returnOrder(arrProd){
+    returnOrder(arrProd) {
       switch (this.order) {
         case "nameAsc":
           return this.orderByNameAsc(arrProd);
@@ -254,12 +269,23 @@ export default {
         default:
           return arrProd;
       }
-    }
+    },
+    totalReal(value) {
+      const coin = +value;
+      return coin.toLocaleString("pt-br", {
+        style: "currency",
+        currency: "BRL",
+      });
+    },
   },
   computed: {
     totalvalor() {
-      let totalproduto = this.$store.state.list.products.map((product) => +product.valortotal);
-      let total = totalproduto.length ? totalproduto.reduce((total, num) => total + num) : 0;
+      let totalproduto = this.$store.state.list.products.map(
+        (product) => +product.valortotal
+      );
+      let total = totalproduto.length
+        ? totalproduto.reduce((total, num) => total + num)
+        : 0;
 
       return total.toLocaleString("pt-br", {
         style: "currency",
@@ -267,20 +293,21 @@ export default {
       });
     },
     produtosNaoPego() {
-      const prodsNaoPegos = this.$store.state.list.products.filter((p) => !p.pego)
-      return this.returnOrder(prodsNaoPegos)
+      const prodsNaoPegos = this.$store.state.list.products.filter(
+        (p) => !p.pego
+      );
+      return this.returnOrder(prodsNaoPegos);
     },
     produtosPego() {
-      const prodsPegos = this.$store.state.list.products.filter((p) => p.pego)
-      return this.returnOrder(prodsPegos)
+      const prodsPegos = this.$store.state.list.products.filter((p) => p.pego);
+      return this.returnOrder(prodsPegos);
     },
   },
   watch: {
     products: {
       handler: function () {
-        this.products.length
-          ? window.localStorage.setItem("productsList", JSON.stringify(this.products))
-          : window.localStorage.clear();
+        //this.products = this.$store.state.list.products
+        //this.products.length ? window.localStorage.setItem("productsList", JSON.stringify(this.products)) : window.localStorage.clear();
       },
       deep: true,
     },
