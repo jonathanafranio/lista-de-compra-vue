@@ -122,9 +122,6 @@ export default {
 
         this.$store.dispatch("list/action_addProduct", { obj_prod: prodAdd });
 
-        this.nome = ''
-        this.quantidade = 1
-
       } else {
         this.$emit('show-duplicity', {
           currentArray: hastThisProd,
@@ -132,6 +129,8 @@ export default {
           prodQtd: +productsList[hastThisProd].quantidade
         })
       }
+      this.nome = ''
+      this.quantidade = 1
     }
   },
 };

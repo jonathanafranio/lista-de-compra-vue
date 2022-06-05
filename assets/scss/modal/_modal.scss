@@ -142,7 +142,7 @@
     }
 }
 
-@keyframes notif {
+@include keyframes(notif) {
     15% {
         transform: translate3d(-25%, 0, 0) rotate3d(0, 0, 1, -5deg);
     }

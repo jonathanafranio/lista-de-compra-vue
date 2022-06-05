@@ -211,7 +211,7 @@ export default {
       let qtdAtual = +this.$store.state.list.products[currentArray].quantidade;
 
       if(newQtd != qtdAtual) {
-        this.$store.commit("list/edit_productQtd", {
+        this.$store.dispatch('list/action_editQtdProd',{ 
           obj_prod: {
             id: this.$store.state.list.products[currentArray].id,
             quantidade: newQtd,
