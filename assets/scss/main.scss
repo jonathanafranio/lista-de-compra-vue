@@ -1,0 +1,18 @@
+//Reset
+@import 'reset/_imports';
+@import 'reset/_mixins';
+@import 'reset/_variables';
+@import 'reset/_normalize';
+@import 'reset/_grid';
+
+//Header
+@import 'header/_header';
+
+//Pages
+@import 'pages/_home';
+
+//Footer
+@import 'footer/_footer';
+
+//Modal
+@import 'modal/_modal';
