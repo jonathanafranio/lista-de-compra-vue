@@ -1,5 +1,8 @@
 # lista-de-compra-vue
 
+Uma lista de compras para supermercados.
+Link para teste: http://jonathanafranio.surge.sh/
+
 ## Build Setup
 
 ```bash
