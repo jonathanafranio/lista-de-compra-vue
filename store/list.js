@@ -14,21 +14,21 @@ export const mutations = {
   add_product(state, { obj_prod }) {
     state.products.push(obj_prod)
   },
-  edit_productQtd(state, { obj_prod }) {
-    const { id, quantidade } = obj_prod
+  edit_productQtd(state, { obj }) {
+    const { id, quantidade, valortotal } = obj
     const indexProd = state.products.findIndex((prod) => prod.id === id)
     if (indexProd < 0) return
     const price = state.products[indexProd].preco
     state.products[indexProd].quantidade = quantidade
-    state.products[indexProd].valortotal = (price * quantidade).toFixed(2)
+    state.products[indexProd].valortotal = valortotal
   },
-  edit_productPrice(state, { obj_prod }) {
-    const { id, preco } = obj_prod
+  edit_productPrice(state, { obj }) {
+    const { id, preco, valortotal } = obj
     const indexProd = state.products.findIndex((prod) => prod.id === id)
     if (indexProd < 0) return
     const quantidade = state.products[indexProd].quantidade
     state.products[indexProd].preco = preco
-    state.products[indexProd].valortotal = (preco * quantidade).toFixed(2)
+    state.products[indexProd].valortotal = valortotal
   },
   edit_productStage(state, { obj_prod }) {
     const { id, pego } = obj_prod
@@ -110,6 +110,74 @@ export const actions = {
     }
     transactionAdd.onerror = (e) => {
       console.log('transação falhou', e)
+    }
+  },
+  action_editQtdProd({ commit, state }, { obj_prod }){
+    const db = state.db
+    const storeName = state.storeName
+    const { id, quantidade } = obj_prod
+
+    const transactionEdit = db.transaction([storeName], "readwrite");
+    const objectStore = transactionEdit.objectStore(storeName)
+    const request = objectStore.get(id)
+
+    request.onerror = function (event) {
+      console.log('Ocorreu um erro ao buscar o contato.');
+    }
+    request.onsuccess = function (event) {
+      let prod = event.target.result
+      prod.quantidade = quantidade
+      const { preco } = prod
+      const total = (preco * quantidade).toFixed(2)
+      prod.valortotal = total
+      const productObj = {
+        id: id,
+        quantidade: quantidade,
+        valortotal: total
+      }
+      const requestUpdate = objectStore.put(prod)
+
+      requestUpdate.onsuccess = function (event) {
+        commit('edit_productQtd', { obj: productObj })
+        console.log('produto editado', event)
+      }
+      requestUpdate.onerror = function (event) {
+        console.log('Ocorreu um erro ao salvar o contato.', event);
+      }
+    }
+  },
+  action_editPriceProd({ commit, state }, { obj_prod }){
+    const db = state.db
+    const storeName = state.storeName
+    const { id, preco } = obj_prod
+
+    const transactionEdit = db.transaction([storeName], "readwrite");
+    const objectStore = transactionEdit.objectStore(storeName)
+    const request = objectStore.get(id)
+
+    request.onerror = function (event) {
+      console.log('Ocorreu um erro ao buscar o contato.');
+    }
+    request.onsuccess = function (event) {
+      let prod = event.target.result
+      prod.preco = preco
+      const { quantidade } = prod
+      const total = (preco * quantidade).toFixed(2)
+      prod.valortotal = total
+      const productObj = {
+        id: id,
+        preco: preco,
+        valortotal: total
+      }
+      const requestUpdate = objectStore.put(prod)
+
+      requestUpdate.onsuccess = function (event) {
+        commit('edit_productPrice', { obj: productObj })
+        console.log('produto editado', event)
+      }
+      requestUpdate.onerror = function (event) {
+        console.log('Ocorreu um erro ao salvar o contato.', event);
+      }
     }
   }
 }

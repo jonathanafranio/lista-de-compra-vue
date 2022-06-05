@@ -178,22 +178,22 @@ export default {
       const { value, dataset } = e.target;
       const idProd = +dataset.idProduct;
 
-      this.$store.commit("list/edit_productQtd", {
+      this.$store.dispatch('list/action_editQtdProd',{ 
         obj_prod: {
           id: idProd,
           quantidade: value,
-        },
-      });
+        }
+      })
     },
     updateProductPrice(e) {
       const { value, dataset } = e.target;
       const idProd = +dataset.idProduct;
-      this.$store.commit("list/edit_productPrice", {
+      this.$store.dispatch('list/action_editPriceProd', {
         obj_prod: {
           id: idProd,
-          preco: value,
-        },
-      });
+          preco: value
+        }
+      })
     },
     changeStatusProd(product) {
       const { id, pego } = product;
