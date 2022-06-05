@@ -120,12 +120,10 @@ export default {
         const newId = productsList.length + 1
         prodAdd.id = newId
 
-        //action_addProduct
         this.$store.dispatch("list/action_addProduct", { obj_prod: prodAdd });
 
-        //this.$store.commit('list/add_product', {
-        //  obj_prod: prodAdd
-        //})
+        this.nome = ''
+        this.quantidade = 1
 
       } else {
         this.$emit('show-duplicity', {

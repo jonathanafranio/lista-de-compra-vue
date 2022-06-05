@@ -132,7 +132,7 @@ div
               )
 
     footer.footer
-      p Total da compra:
+      p Total da compra: 
         strong {{ totalvalor }}
 
   ModalDuplicidade(
