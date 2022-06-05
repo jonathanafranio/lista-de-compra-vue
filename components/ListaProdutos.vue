@@ -3,7 +3,7 @@
     .container
       IncludeItem(v-on:add-prod="hasProd")
       hr
-      div.sort(v-if="products.length > 1")
+      div.sort(v-if="$store.state.list.products.length > 1")
         div.sort__select
           svg.sort__icon(viewBox="0 0 15 15")
             path(d="M7.36 2.988a.645.645 0 01-.02.912c-.271.26-.7.26-.972 0L4.82 2.415v10.68a.687.687 0 11-1.375 0V2.415L1.895 3.9c-.271.26-.7.26-.971 0a.645.645 0 01-.02-.912l.02-.02L3.646.36c.272-.26.7-.26.972 0L7.34 2.969zm6.875 8.413a.645.645 0 01-.02.02l-2.722 2.608c-.272.26-.7.26-.972 0L7.799 11.42a.645.645 0 010-.931c.271-.26.7-.26.972 0l1.549 1.483V1.293a.687.687 0 111.375 0v10.68l1.548-1.484c.272-.26.7-.26.972 0a.645.645 0 01.02.912z" fill="currentColor")
@@ -19,7 +19,7 @@
 
         hr
       ul.list.mx-12
-        li(v-if="products.length <= 0")
+        li(v-if="$store.state.list.products.length <= 0")
           h3 Sua lista está vazia.
 
         li.list__prod.list__title(v-else)
@@ -227,40 +227,55 @@ export default {
       const prodIdOrder = this.products.sort((a, b) => a.id - b.id);
       return prodIdOrder;
     },
-    orderByNameAsc() {
-      const prodNameAsc = this.products.sort((a, b) => {
+    orderByNameAsc(arrProd) {
+      console.log({ arrProd })
+      const prodNameAsc = arrProd.sort((a, b) => {
         const nameA = a.nome.toLowerCase();
         const nameB = b.nome.toLowerCase();
         return nameA.localeCompare(nameB);
       });
       return prodNameAsc;
     },
-    orderByNameDesc() {
-      return this.orderByNameAsc().reverse();
+    orderByNameDesc(arrProd) {
+      return this.orderByNameAsc(arrProd).reverse();
     },
-    orderBypriceAsc() {
-      const prodPriceAsc = this.products.sort((a, b) => a.preco - b.preco);
+    orderBypriceAsc(arrProd) {
+      const prodPriceAsc = arrProd.sort((a, b) => a.preco - b.preco);
       return prodPriceAsc;
     },
-    orderBypriceDesc() {
-      return this.orderBypriceAsc().reverse();
+    orderBypriceDesc(arrProd) {
+      return this.orderBypriceAsc(arrProd).reverse();
     },
-    orderByQtdAsc() {
-      const prodQtdAsc = this.products.sort(
-        (a, b) => a.quantidade - b.quantidade
-      );
+    orderByQtdAsc(arrProd) {
+      const prodQtdAsc = arrProd.sort((a, b) => a.quantidade - b.quantidade);
       return prodQtdAsc;
     },
-    orderByQtdDesc() {
-      return this.orderByQtdAsc().reverse();
+    orderByQtdDesc(arrProd) {
+      return this.orderByQtdAsc(arrProd).reverse();
     },
+    returnOrder(arrProd){
+      switch (this.order) {
+        case "nameAsc":
+          return this.orderByNameAsc(arrProd);
+        case "nameDesc":
+          return this.orderByNameDesc(arrProd);
+        case "priceAsc":
+          return this.orderBypriceAsc(arrProd);
+        case "priceDesc":
+          return this.orderBypriceDesc(arrProd);
+        case "qtdAsc":
+          return this.orderByQtdAsc(arrProd);
+        case "qtdDesc":
+          return this.orderByQtdDesc(arrProd);
+        default:
+          return arrProd;
+      }
+    }
   },
   computed: {
     totalvalor() {
-      let totalproduto = this.products.map((product) => +product.valortotal);
-      let total = this.products.length
-        ? totalproduto.reduce((total, num) => total + num)
-        : 0;
+      let totalproduto = this.$store.state.list.products.map((product) => +product.valortotal);
+      let total = totalproduto.length ? totalproduto.reduce((total, num) => total + num) : 0;
 
       return total.toLocaleString("pt-br", {
         style: "currency",
@@ -268,37 +283,16 @@ export default {
       });
     },
     produtosNaoPego() {
-      return this.products.filter((p) => !p.pego);
+      const prodsNaoPegos = this.$store.state.list.products.filter((p) => !p.pego)
+      return this.returnOrder(prodsNaoPegos)
     },
     produtosPego() {
-      return this.products.filter((p) => p.pego);
+      const prodsPegos = this.$store.state.list.products.filter((p) => p.pego)
+
+      return this.returnOrder(prodsPegos)
     },
   },
   watch: {
-    order() {
-      switch (this.order) {
-        case "nameAsc":
-          this.products = this.orderByNameAsc();
-          break;
-        case "nameDesc":
-          this.products = this.orderByNameDesc();
-          break;
-        case "priceAsc":
-          this.products = this.orderBypriceAsc();
-          break;
-        case "priceDesc":
-          this.products = this.orderBypriceDesc();
-          break;
-        case "qtdAsc":
-          this.products = this.orderByQtdAsc();
-          break;
-        case "qtdDesc":
-          this.products = this.orderByQtdDesc();
-          break;
-        default:
-          this.products = this.orderDefault();
-      }
-    },
     products: {
       handler: function () {
         this.products.length
