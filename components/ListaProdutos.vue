@@ -1,7 +1,8 @@
 <template lang="pug">
   div
     .container
-      IncludeItem(v-on:add-prod="hasProd")
+      IncludeItem(v-on:show-duplicity="hasDuplicity")
+      //IncludeItem(v-on:add-prod="hasProd")
       hr
       div.sort(v-if="$store.state.list.products.length > 1")
         div.sort__select
@@ -84,8 +85,7 @@
             input(
               type="number" 
               v-bind:id="'qtd'+index" 
-              v-model="product.quantidade" 
-              v-on:keyup="incluirPreco(product)" 
+              v-on:keyup="incluirPreco()" 
               v-on:blur="requireQtd(product)" 
               min="1" 
               required
@@ -142,7 +142,7 @@ export default {
   },
   data() {
     return {
-      products: [],
+      //products: [],
       duplicidade: "",
       order: "default",
     };
@@ -160,27 +160,9 @@ export default {
     //}
   },
   methods: {
-    hasProd(product) {
-      const nameNewProd = product.nome.toLowerCase();
-      const hastThisProd = this.products.findIndex(
-        (prod) => prod.nome.toLowerCase() === nameNewProd
-      );
-
-      if (hastThisProd < 0) {
-        const newId = this.products.length + 1;
-        product.id = newId;
-        this.addProduct(product);
-      } else {
-        this.duplicidade = {
-          currentArray: hastThisProd,
-          prodNome: this.products[hastThisProd].nome,
-          prodQtd: +this.products[hastThisProd].quantidade,
-        };
-        navigator.vibrate(400);
-      }
-    },
-    addProduct(product) {
-      this.products.push(product);
+    hasDuplicity(duplicity){
+      this.duplicidade = duplicity
+      navigator.vibrate(400)
     },
     removeProduct(product) {
       const index = this.products.indexOf(product);
@@ -188,25 +170,27 @@ export default {
       this.duplicidade = "";
     },
     requireQtd(product) {
-      const index = this.products.indexOf(product);
-      console.log({ index, product })
-      const qdtValue = this.products[index].quantidade;
+      console.log({ e })
+      const listProducts = this.$store.state.list.products
+      const index = listProducts.indexOf(product);
+      const qdtValue = listProducts[index].quantidade;
       const regexValid = /\d/gi.test(qdtValue);
-      !regexValid ? this.products[index].quantidade = 1 : this.products[index].quantidade;
+      !regexValid ? listProducts[index].quantidade = 1 : listProducts[index].quantidade;
 
-      qdtValue === "" ? this.products[index].quantidade = 1 : qdtValue;
-      qdtValue < 1 ? this.products[index].quantidade = 1 : qdtValue;
+      qdtValue === "" ? listProducts[index].quantidade = 1 : qdtValue < 1 ? listProducts[index].quantidade = 1 : qdtValue;
 
       this.incluirPreco(product);
     },
     incluirPreco(product) {
-      const index = this.products.indexOf(product);
-      let precoUnitario = this.products[index].preco;
-      let precoTotal = (
-        precoUnitario * this.products[index].quantidade
-      ).toFixed(2);
+      console.log({ product })
+      this.$store.commit('list/edit_product', {
+        obj_prod: product
+      })
+      //let precoTotal = (
+      //  precoUnitario * listProducts[index].quantidade
+      //).toFixed(2);
 
-      this.products[index].valortotal = precoTotal;
+      //listProducts.valortotal = precoTotal;
     },
     changeStatusProd(product) {
       const index = this.products.indexOf(product);
@@ -288,7 +272,6 @@ export default {
     },
     produtosPego() {
       const prodsPegos = this.$store.state.list.products.filter((p) => p.pego)
-
       return this.returnOrder(prodsPegos)
     },
   },

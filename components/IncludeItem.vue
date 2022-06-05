@@ -103,6 +103,46 @@ export default {
   methods: {
     addProduct() {
       if (this.nome.trim() === "") {
+        return
+      }
+      let prodAdd = {
+        nome: this.nome,
+        quantidade: +this.quantidade,
+        preco: 0,
+        valortotal: 0,
+        pego: false,
+      }
+      const nameNewProd = prodAdd.nome.toLowerCase()
+      const productsList = this.$store.state.list.products
+      const hastThisProd = productsList.findIndex((prod) => prod.nome.toLowerCase() === nameNewProd)
+
+      if (hastThisProd < 0) {
+        const newId = productsList.length + 1
+        prodAdd.id = newId
+
+        this.$store.commit('list/add_product', {
+          obj_prod: prodAdd
+        })
+
+      } else {
+        this.$emit('show-duplicity', {
+          currentArray: hastThisProd,
+          prodNome: productsList[hastThisProd].nome,
+          prodQtd: +productsList[hastThisProd].quantidade
+        })
+        /*
+        this.duplicidade = {
+          currentArray: hastThisProd,
+          prodNome: productsList[hastThisProd].nome,
+          prodQtd: +productsList[hastThisProd].quantidade,
+        };
+        navigator.vibrate(400);
+        */
+      }
+    },
+    /*
+    addProduct() {
+      if (this.nome.trim() === "") {
         return;
       }
 
@@ -116,7 +156,7 @@ export default {
 
       this.nome = "";
       this.quantidade = 1;
-    },
+    },*/
   },
 };
 </script>
