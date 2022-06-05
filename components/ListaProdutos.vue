@@ -160,16 +160,9 @@ export default {
     };
   },
   created() {
-    //if (localStorage.getItem("productsList") != null) {
-    //  const localStorageProd = JSON.parse(localStorage.getItem("productsList"));
-    //  let produtos = localStorageProd.map((p, i) => {
-    //    p.id == undefined ? (p.id = i + 1) : p.id;
-    //    p.pego == undefined ? (p.pego = false) : p.pego;
-    //    return p;
-    //  });
-    //  this.products = produtos;
-    //  this.orderDefault();
-    //}
+    if (process.client) {
+      this.$store.dispatch("list/creatIndexedDB", {});
+    }
   },
   methods: {
     hasDuplicity(duplicity) {
@@ -276,16 +269,12 @@ export default {
         style: "currency",
         currency: "BRL",
       });
-    },
+    }
   },
   computed: {
     totalvalor() {
-      let totalproduto = this.$store.state.list.products.map(
-        (product) => +product.valortotal
-      );
-      let total = totalproduto.length
-        ? totalproduto.reduce((total, num) => total + num)
-        : 0;
+      let totalproduto = this.$store.state.list.products.map((product) => +product.valortotal)
+      let total = totalproduto.length ? totalproduto.reduce((total, num) => total + num) : 0
 
       return total.toLocaleString("pt-br", {
         style: "currency",
@@ -293,9 +282,7 @@ export default {
       });
     },
     produtosNaoPego() {
-      const prodsNaoPegos = this.$store.state.list.products.filter(
-        (p) => !p.pego
-      );
+      const prodsNaoPegos = this.$store.state.list.products.filter((p) => !p.pego);
       return this.returnOrder(prodsNaoPegos);
     },
     produtosPego() {
@@ -304,13 +291,6 @@ export default {
     },
   },
   watch: {
-    products: {
-      handler: function () {
-        //this.products = this.$store.state.list.products
-        //this.products.length ? window.localStorage.setItem("productsList", JSON.stringify(this.products)) : window.localStorage.clear();
-      },
-      deep: true,
-    },
   },
 };
 </script>

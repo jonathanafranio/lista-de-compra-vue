@@ -120,9 +120,12 @@ export default {
         const newId = productsList.length + 1
         prodAdd.id = newId
 
-        this.$store.commit('list/add_product', {
-          obj_prod: prodAdd
-        })
+        //action_addProduct
+        this.$store.dispatch("list/action_addProduct", { obj_prod: prodAdd });
+
+        //this.$store.commit('list/add_product', {
+        //  obj_prod: prodAdd
+        //})
 
       } else {
         this.$emit('show-duplicity', {
@@ -130,33 +133,8 @@ export default {
           prodNome: productsList[hastThisProd].nome,
           prodQtd: +productsList[hastThisProd].quantidade
         })
-        /*
-        this.duplicidade = {
-          currentArray: hastThisProd,
-          prodNome: productsList[hastThisProd].nome,
-          prodQtd: +productsList[hastThisProd].quantidade,
-        };
-        navigator.vibrate(400);
-        */
       }
-    },
-    /*
-    addProduct() {
-      if (this.nome.trim() === "") {
-        return;
-      }
-
-      this.$emit("add-prod", {
-        nome: this.nome,
-        quantidade: this.quantidade,
-        preco: 0,
-        valortotal: 0,
-        pego: false,
-      });
-
-      this.nome = "";
-      this.quantidade = 1;
-    },*/
+    }
   },
 };
 </script>
