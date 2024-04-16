@@ -46,8 +46,6 @@ export const mutations = {
 export const actions = {
   creatIndexedDB({ dispatch, commit, state }, { }) {
     let db;
-    //const dbName = 'myListProductsDB',
-    //  storeName = 'products';
     const dbName = state.dbName
     const storeName = state.storeName
     if (window.indexedDB) {
