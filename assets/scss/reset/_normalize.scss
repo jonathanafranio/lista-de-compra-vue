@@ -1,3 +1,6 @@
+@use "variables";
+@use "sass:color";
+
 * {
 	box-sizing: border-box;
 }
@@ -9,9 +12,9 @@ html {
 body {
 	margin: 0;
 	font-size: 1.6rem;
-	font-family: $main-font;
-	color: $text-color;
-	background: $bg-body;
+	font-family: variables.$main-font;
+	color: variables.$text-color;
+	background: variables.$bg-body;
 }
 
 a {
@@ -81,10 +84,10 @@ input {
 		padding: 5px 15px;
 		font-size: 1.6rem;
 		font-weight: 600;
-		color: $light-main;
+		color: variables.$light-main;
 		text-transform: uppercase;
-		border: 1px solid $bg-secundary;
-		background: $bg-secundary;
+		border: 1px solid variables.$bg-secundary;
+		background: variables.$bg-secundary;
 		box-shadow: none;
 		border-radius: 5px;
 		will-change: background, border;
@@ -94,15 +97,15 @@ input {
 		cursor: pointer;
 
 		&:hover {
-			background: color.adjust($bg-secundary, $lightness: -10%);
+			background: color.adjust(variables.$bg-secundary, $lightness: -10%);
 		}
 
 		&:focus {
-			background: $bg-secundary;
+			background: variables.$bg-secundary;
 		}
 
 		&:active {
-			background: $bg-secundary;
+			background: variables.$bg-secundary;
 		}
 	}
 	
@@ -117,10 +120,10 @@ input {
 		padding: 5px 15px;
 		font-size: 1.6rem;
 		font-weight: 300;
-		color: $text-color;
-		border: 1px solid $text-color;
+		color: variables.$text-color;
+		border: 1px solid variables.$text-color;
 		border-radius: 5px;
-		background: $light-main;
+		background: variables.$light-main;
 		&:focus {
 			border-color: #737373;
 		}
@@ -150,9 +153,9 @@ h2,
 h3 {
 	clear: both;
 	margin: 0;
-	font-family: $main-font;
+	font-family: variables.$main-font;
 	font-weight: 500;
-	color: $dark-text;
+	color: variables.$dark-text;
 }
 
 h1 {
@@ -200,15 +203,15 @@ button {
 	padding: 5px 15px;
 	font-size: 1.6rem;
 	font-weight: 600;
-	color: $light-main;
+	color: variables.$light-main;
 	text-transform: uppercase;
-	border: 1px solid $bg-secundary;
-	background: $bg-secundary;
+	border: 1px solid variables.$bg-secundary;
+	background: variables.$bg-secundary;
 	box-shadow: none;
 	border-radius: 5px;
 	&:hover {
-		background: color.adjust($bg-secundary, $lightness: -10%);
-		border: 1px solid color.adjust($bg-secundary, $lightness: -10%);
+		background: color.adjust(variables.$bg-secundary, $lightness: -10%);
+		border: 1px solid color.adjust(variables.$bg-secundary, $lightness: -10%);
 	}
 }
 
@@ -217,10 +220,10 @@ select {
 	padding: 5px 15px;
 	font-size: 1.6rem;
 	font-weight: 300;
-	color: $text-color;
-	border: 1px solid $text-color;
+	color: variables.$text-color;
+	border: 1px solid variables.$text-color;
 	border-radius: 5px;
-	background: $light-main;
+	background: variables.$light-main;
 
 	&:focus {
 		border-color: #737373;
@@ -236,11 +239,11 @@ textarea:focus {
 *--------------------------------------------------------------*/
 
 a {
-	color: $main-color;
+	color: variables.$main-color;
 	&:hover,
 	&:focus,
 	&:active {
-		color: $text-color;
+		color: variables.$text-color;
 		outline: 0 !important;
 	}
 }

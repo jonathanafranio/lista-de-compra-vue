@@ -1,10 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   modules: ['@pinia/nuxt'],
   css: [
-    '@/assets/scss/main.scss'
+    '@/assets/scss/main.scss',
   ],
   vite: {
     plugins: [
@@ -20,6 +21,13 @@ export default defineNuxtConfig({
           }
         }
       }
-    ]
+    ],
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler', // ou "modern"
+        }
+      }
+    }
   },
 })

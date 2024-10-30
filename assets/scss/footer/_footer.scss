@@ -1,3 +1,5 @@
+@use "../reset/variables";
+
 .footer {
     display: block;
     width: calc(100% + 30px);
@@ -5,7 +7,7 @@
     padding: 0px 15px;
     border-top: 1px solid #dcdcdc;
     position: relative;
-    color: $dark-text;
+    color: variables.$dark-text;
 
     p {
         text-align: right;

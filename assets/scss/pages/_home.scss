@@ -1,3 +1,5 @@
+@use "../reset/variables";
+
 #app {
     display: flex;
     align-items: center;
@@ -85,7 +87,7 @@
 
         label {
             margin-bottom: 10px;
-            color: $dark-text;
+            color: variables.$dark-text;
         }
     }
 }
@@ -94,7 +96,7 @@
     display: block;
     padding: 0px;
     margin-bottom: 10px;
-    color: $dark-text;
+    color: variables.$dark-text;
     list-style-type: none;
     list-style-position: inside;
 
@@ -142,20 +144,20 @@
         cursor: pointer;
 
         &.checked {
-            color: $text-color;
+            color: variables.$text-color;
             text-decoration: line-through;
         }
     }
 
     &__label-prod {
-        color: $dark-text;
+        color: variables.$dark-text;
 
         &:before {
             content: '';
             display: block;
             width: 20px;
             height: 20px;
-            border: 1px solid $text-color;
+            border: 1px solid variables.$text-color;
             position: absolute;
             left: 0;
             top: 50%;
@@ -179,7 +181,7 @@
         opacity: 0;
 
         &:checked+label {
-            color: $text-color;
+            color: variables.$text-color;
             text-decoration: line-through;
 
             &:before {
@@ -194,8 +196,8 @@
     &__btn {
         height: 36px;
         padding: 5px 0px;
-        background: $main-color;
-        border-color: $main-color;
+        background: variables.$main-color;
+        border-color: variables.$main-color;
         text-align: center;
 
         svg {
@@ -292,8 +294,8 @@
         justify-content: space-between;
         padding: 12px 16px;
         position: relative;
-        background-color: $main-color;
-        color: $light-main;
+        background-color: variables.$main-color;
+        color: variables.$light-main;
         font-weight: 700;
         line-height: 1.25;
         border-radius: 4px 4px 0 0;
@@ -342,7 +344,7 @@
     &__body {
         max-height: 80vh;
         padding: 1.25em 1.5em;
-        color: $dark-text;
+        color: variables.$dark-text;
         background-color: #fff;
         overflow-y: auto;
 
@@ -358,7 +360,7 @@
         padding: 12px 16px;
         position: relative;
         background-color: #fff;
-        color: $light-main;
+        color: variables.$light-main;
         font-weight: 700;
         line-height: 1.25;
         border-top: 1px solid #dcdcdc;
@@ -395,8 +397,8 @@
     }
 
     &__delete {
-        background-color: $main-color;
-        border-color: $main-color;
+        background-color: variables.$main-color;
+        border-color: variables.$main-color;
     }
 }
 

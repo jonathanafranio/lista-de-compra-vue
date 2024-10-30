@@ -1,3 +1,5 @@
+@use "variables";
+
 /* ========================================
  Row & Site container
  ======================================== */
@@ -14,7 +16,7 @@
 	padding: 0 15px;
 	position: relative;
 	zoom: 1;
-	background: rgba($light-main, .9);
+	background: rgba(variables.$light-main, .9);
 
 	@media screen and (min-width: 600px) {
 		border-radius: 15px;
@@ -41,7 +43,7 @@
 /* ========================================
    Col and Viewport sizes
    ======================================== */
-@each $prefix, $size-value, $column-number, $pos in $sizes {
+@each $prefix, $size-value, $column-number, $pos in variables.$sizes {
 	@if ($pos==last) {
 		@for $aux from 1 through $column-number {
 			.#{$prefix}-#{$aux} {
