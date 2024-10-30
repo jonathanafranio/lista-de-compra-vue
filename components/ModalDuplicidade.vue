@@ -1,5 +1,5 @@
 <script setup>
-import { ref, toRefs, defineEmits } from 'vue'
+import { ref, toRefs } from 'vue'
 import { useProductStore } from '~/stores/list'
 import { storeToRefs } from 'pinia';
 

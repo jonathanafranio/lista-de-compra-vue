@@ -22,7 +22,7 @@
         button(type="submit") Adicionar
 </template>
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref } from 'vue';
 import { useProductStore } from '~/stores/list';
 import { storeToRefs } from 'pinia';
 
