@@ -90,10 +90,11 @@ input {
 		will-change: background, border;
 		transition: all .5s linear;
 		-webkit-appearance: button;
+		
 		cursor: pointer;
 
 		&:hover {
-			background: darken($bg-secundary, 10%);
+			background: color.adjust($bg-secundary, $lightness: -10%);
 		}
 
 		&:focus {
@@ -206,8 +207,8 @@ button {
 	box-shadow: none;
 	border-radius: 5px;
 	&:hover {
-		background: darken($bg-secundary, 10%);
-		border: 1px solid darken($bg-secundary, 10%);
+		background: color.adjust($bg-secundary, $lightness: -10%);
+		border: 1px solid color.adjust($bg-secundary, $lightness: -10%);
 	}
 }
 

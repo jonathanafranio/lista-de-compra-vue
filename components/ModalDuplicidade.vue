@@ -1,3 +1,56 @@
+<script setup>
+import { ref, toRefs, defineEmits } from 'vue'
+import { useProductStore } from '~/stores/list'
+import { storeToRefs } from 'pinia';
+
+
+const props = defineProps({
+  duplicidade: {
+    type: Object,
+    default: () => ({})
+  }
+})
+
+
+const emit = defineEmits(['alter-qtd', 'remove-modal'])
+const store = useProductStore();
+const { products } = storeToRefs(store);
+
+// Inicializando o valor de newQtd
+const { duplicidade } = toRefs(props)
+const newQtd = ref(duplicidade.value.prodQtd || 1)
+
+// Funções para manipulação de quantidade
+const acrescentar = () => {
+  newQtd.value += 1
+}
+
+const reduzir = () => {
+  if (newQtd.value > 1) newQtd.value -= 1
+}
+
+const min = () => {
+  if (newQtd.value < 1) newQtd.value = 1
+}
+
+// Função para salvar quantidade
+const salvar = () => {
+  emit('alter-qtd', {
+    newQtd: newQtd.value,
+    prodQtd: duplicidade.value.prodQtd,
+    currentArray: duplicidade.value.currentArray
+  })
+}
+
+// Função para remover produto
+const remover = () => {
+  const indexProd = duplicidade.value.currentArray
+  const product = products.value[indexProd]
+  console.log({ product, indexProd })
+  emit('remove-modal', product)
+}
+
+</script>
 <template lang="pug">
   div.modal.-show
     div.modal__content
@@ -17,42 +70,3 @@
         button(v-on:click="salvar") {{ newQtd === duplicidade.prodQtd ? 'Fechar' : 'Salvar' }}
         button.modal__delete(v-on:click="remover") Excluir
 </template>
-
-<script>
-export default {
-  props: {
-    duplicidade: {
-      type: Object,
-      default: () => {}
-    },
-  },
-  data(){
-    return {
-        newQtd: this.duplicidade.prodQtd ? this.duplicidade.prodQtd : 1
-    }
-  },
-  methods: {
-    acrescentar(){
-        this.newQtd = this.newQtd + 1
-    },
-    reduzir(){
-        this.newQtd > 1 ? this.newQtd = this.newQtd - 1 : this.newQtd
-    },
-    salvar(){
-      this.$emit('alter-qdt', {
-        newQtd: this.newQtd,
-        prodQtd: this.duplicidade.prodQtd,
-        currentArray: this.duplicidade.currentArray
-      })
-    },
-    remover(){
-      const indexProd = this.duplicidade.currentArray
-      const product = this.$store.state.list.products[indexProd]
-      this.$emit('remove-modal', product)
-    },
-    min(){
-      this.newQtd < 1 ? this.newQtd = 1 : this.newQtd
-    }
-  }
-}
-</script>
