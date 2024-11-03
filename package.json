@@ -7,11 +7,13 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "test": "vitest"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.5.5",
     "core-js": "^3.19.3",
+    "idb": "^8.0.0",
     "nuxt": "^3.13.2",
     "pinia": "^2.2.4",
     "pug": "^3.0.2",
@@ -19,5 +21,12 @@
     "sass": "^1.52.2",
     "vue": "^3.2.0",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/test-utils": "^2.4.6",
+    "fake-indexeddb": "^6.0.0",
+    "jsdom": "^25.0.1",
+    "vitest": "^2.1.4"
   }
 }

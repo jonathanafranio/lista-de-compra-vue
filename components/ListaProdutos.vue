@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useProductStore } from '~/stores/list';
+import { useProductStore } from '@/stores/list';
 import { storeToRefs } from 'pinia';
 
 const duplicidade = ref("");
