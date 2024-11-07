@@ -2,6 +2,8 @@
 import { ref, computed, onMounted } from 'vue';
 import { useProductStore } from '@/stores/list';
 import { storeToRefs } from 'pinia';
+import IncludeItem from './IncludeItem.vue';
+import ModalDuplicidade from './ModalDuplicidade.vue';
 
 const duplicidade = ref("");
 const order = ref("default");
