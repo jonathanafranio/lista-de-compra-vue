@@ -1,5 +1,31 @@
 @use "../reset/variables";
 
+.header {
+	display: block;
+	width: calc(100% + 30px);
+	margin-left: -15px;
+	z-index: 1000;
+	padding: 10px 0px;
+	position: relative;
+	text-align: center;
+	border-bottom: 1px solid #dcdcdc;
+}
+
+.footer {
+    display: block;
+    width: calc(100% + 30px);
+    margin-left: -15px;
+    padding: 0px 15px;
+    border-top: 1px solid #dcdcdc;
+    position: relative;
+    color: variables.$dark-text;
+
+    p {
+        text-align: right;
+        font-size: 1.8rem;
+    }
+}
+
 #app {
     display: flex;
     align-items: center;
@@ -57,8 +83,7 @@
         margin-top: 15px;
 
         @media screen and (min-width: 521px) {
-            padding-left: 15px;
-            padding-right: 15px;
+            padding-inline: 15px;
 
             &:first-child {
                 padding-left: 0px;
@@ -101,9 +126,7 @@
     list-style-position: inside;
 
     .col {
-        padding-left: 15px;
-        padding-right: 15px;
-
+        padding-inline: 15px;
         &:last-child {
             padding-right: 0px;
         }
@@ -199,7 +222,6 @@
         background: variables.$main-color;
         border-color: variables.$main-color;
         text-align: center;
-
         svg {
             display: block;
             margin: auto;
@@ -240,7 +262,6 @@
 .sort {
     &__select {
         position: relative;
-
         select {
             padding-left: 25px;
         }
@@ -347,12 +368,10 @@
         color: variables.$dark-text;
         background-color: #fff;
         overflow-y: auto;
-
         @media screen and (min-height: 520px) {
             max-height: 400px;
         }
     }
-
     &__footer {
         display: flex;
         align-items: center;
@@ -406,19 +425,15 @@
     15% {
         transform: translate3d(-25%, 0, 0) rotate3d(0, 0, 1, -5deg);
     }
-
     30% {
         transform: translate3d(20%, 0, 0) rotate3d(0, 0, 1, 3deg);
     }
-
     45% {
         transform: translate3d(-15%, 0, 0) rotate3d(0, 0, 1, -3deg);
     }
-
     60% {
         transform: translate3d(10%, 0, 0) rotate3d(0, 0, 1, 2deg);
     }
-
     75% {
         transform: translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -1deg);
     }

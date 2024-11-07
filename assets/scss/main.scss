@@ -1,11 +1,6 @@
 //Reset
 @use 'reset/_variables';
 @use 'reset/_normalize';
-@use 'reset/_grid';
 
-//Header
-@use 'header/_header';
 //Pages
 @use 'pages/_home';
-//Footer
-@use 'footer/_footer';
