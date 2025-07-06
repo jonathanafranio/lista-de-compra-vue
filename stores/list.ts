@@ -1,7 +1,15 @@
 import { defineStore } from 'pinia'
+import type {
+  ProductsState,
+  Product,
+  EditQtdPayload,
+  EditPricePayload,
+  EditStagePayload
+} from '@/types/product'
+//import type { ProductsState, Product } from '@/types/product'
 
 export const useProductStore = defineStore('products', {
-  state: () => ({
+  state: (): ProductsState => ({
     products: [],
     db: '',
     dbName: 'myListProductsDB',
@@ -9,40 +17,38 @@ export const useProductStore = defineStore('products', {
   }),
   actions: {
     // era as mutations
-    add_product( obj_prod ) {
-      this.products.push(obj_prod)
+    add_product( product: Product ) {
+      this.products.push(product)
     },
-    edit_productQtd( obj ) {
+    edit_productQtd( obj: EditQtdPayload ) {
       const { id, quantidade, valortotal } = obj
       const indexProd = this.products.findIndex((prod) => prod.id === id)
       if (indexProd < 0) return
-      //const price = this.products[indexProd].preco
       this.products[indexProd].quantidade = quantidade
       this.products[indexProd].valortotal = valortotal
     },
-    edit_productPrice( obj ) {
+    edit_productPrice( obj: EditPricePayload ) {
       const { id, preco, valortotal } = obj
       const indexProd = this.products.findIndex((prod) => prod.id === id)
       if (indexProd < 0) return
-      //const quantidade = this.products[indexProd].quantidade
       this.products[indexProd].preco = preco
       this.products[indexProd].valortotal = valortotal
     },
-    edit_productStage( obj ) {
+    edit_productStage( obj: EditPricePayload ) {
       const { id, pego } = obj
       const indexProd = this.products.findIndex((prod) => prod.id === id)
       if (indexProd < 0) return
       this.products[indexProd].pego = pego
     },
-    removeProd(id) {
+    removeProd(id: number) {
       const indexProd = this.products.findIndex((prod) => prod.id === id)
       if (indexProd < 0) return
       this.products.splice(indexProd, 1)
     },
 
     // os actions:
-    creatIndexedDB() {
-      let db;
+    async creatIndexedDB(): Promise<void> {
+      let db
       const dbName = this.dbName
       const storeName = this.storeName
       if (window.indexedDB) {
@@ -79,13 +85,13 @@ export const useProductStore = defineStore('products', {
         console.log('não suporta indexedDB')
       }
     },
-    loadProds( db ) {
+    loadProds( db: IDBDatabase ) {
       const { storeName, products } = this
       let objectStore = db.transaction(storeName).objectStore(storeName)
       objectStore.openCursor().onsuccess = (e) => {
         const cursor = e.target.result
         if(cursor) {
-          const obj_prod = cursor.value
+          const obj_prod: Product = cursor.value
           const { id } =  obj_prod
           const hasProd = products.filter((p) => p.id === id)
           if(hasProd.length < 1) {
@@ -95,28 +101,28 @@ export const useProductStore = defineStore('products', {
         }
       }
     },
-    action_addProduct( obj_prod ) {
+    action_addProduct( obj_prod: Product ) {
       const db = this.db
       const storeName = this.storeName
 
-      const transactionAdd = db.transaction([storeName], 'readwrite')
+      const transactionAdd = (db as IDBDatabase).transaction([storeName], 'readwrite')
       const objectStore = transactionAdd.objectStore(storeName)
-      const request = objectStore.add(obj_prod)
+      objectStore.add(obj_prod)
 
-      transactionAdd.oncomplete = (e) => {
+      transactionAdd.oncomplete = () => {
         this.add_product( obj_prod )
       }
       transactionAdd.onerror = (e) => {
         console.log('transação falhou', e)
       }
     },
-    action_editQtdProd( obj_prod ) {
+    action_editQtdProd( obj_prod: EditQtdPayload ) {
       const db = this.db
       const storeName = this.storeName
       const { id, quantidade } = obj_prod
       const _this = this
 
-      const transactionEdit = db.transaction([storeName], "readwrite");
+      const transactionEdit = (db as IDBDatabase).transaction([storeName], "readwrite");
       const objectStore = transactionEdit.objectStore(storeName)
       const request = objectStore.get(id)
 
@@ -129,15 +135,14 @@ export const useProductStore = defineStore('products', {
         const { preco } = prod
         const total = (preco * quantidade).toFixed(2)
         prod.valortotal = total
-        const productObj = {
-          id: id,
-          quantidade: quantidade,
+        const productObj: EditQtdPayload = {
+          id,
+          quantidade,
           valortotal: total
         }
         const requestUpdate = objectStore.put(prod)
 
         requestUpdate.onsuccess = function (event) {
-          //commit('edit_productQtd', { obj: productObj })
           _this.edit_productQtd( productObj );
           console.log('produto editado', event)
         }
@@ -146,16 +151,16 @@ export const useProductStore = defineStore('products', {
         }
       }
     },
-    action_editPriceProd( obj_prod ) {
+    action_editPriceProd( obj_prod: EditPricePayload ) {
       const db = this.db
       const storeName = this.storeName
       const { id, preco } = obj_prod
+      const _this = this
 
-      const transactionEdit = db.transaction([storeName], "readwrite");
+      const transactionEdit = (db as IDBDatabase).transaction([storeName], "readwrite")
       const objectStore = transactionEdit.objectStore(storeName)
       const request = objectStore.get(id)
 
-      const _this = this
 
       request.onerror = function (event) {
         console.log('Ocorreu um erro ao buscar o contato.');
@@ -164,18 +169,17 @@ export const useProductStore = defineStore('products', {
         let prod = event.target.result
         prod.preco = preco
         const { quantidade } = prod
-        const total = (preco * quantidade).toFixed(2)
+        const total : number = (preco * quantidade).toFixed(2)
         prod.valortotal = total
-        const productObj = {
-          id: id,
-          preco: preco,
+        const productObj : EditPricePayload = {
+          id,
+          preco,
           valortotal: total
         }
         const requestUpdate = objectStore.put(prod)
   
         requestUpdate.onsuccess = function (event) {
           _this.edit_productPrice(productObj)
-          //commit('edit_productPrice', { obj: productObj })
           console.log('produto editado', event)
         }
         requestUpdate.onerror = function (event) {
@@ -183,14 +187,14 @@ export const useProductStore = defineStore('products', {
         }
       }
     },
-    action_changeStatusProd( obj_prod ) {
+    action_changeStatusProd( obj_prod: EditStagePayload ) {
       const db = this.db
       const storeName = this.storeName
       const { id, pego } = obj_prod
 
       const _this = this
 
-      const transactionEdit = db.transaction([storeName], "readwrite");
+      const transactionEdit = (db as IDBDatabase).transaction([storeName], "readwrite");
       const objectStore = transactionEdit.objectStore(storeName)
       const request = objectStore.get(id)
 
@@ -200,7 +204,7 @@ export const useProductStore = defineStore('products', {
       request.onsuccess = function (event) {
         let prod = event.target.result
         prod.pego = pego
-        const productObj = {
+        const productObj : EditStagePayload = {
           id: id,
           pego: pego
         }
@@ -208,7 +212,6 @@ export const useProductStore = defineStore('products', {
 
         requestUpdate.onsuccess = function (event) {
           _this.edit_productStage(productObj);
-          //commit('edit_productStage', { obj: productObj })
           console.log('produto editado', event)
         }
         requestUpdate.onerror = function (event) {
@@ -216,12 +219,12 @@ export const useProductStore = defineStore('products', {
         }
       }
     },
-    actions_removeProd( id ) {
+    actions_removeProd( id: number ) {
       const db = this.db
       const storeName = this.storeName
-      const transactionRmm = db.transaction([storeName], 'readwrite')
+      const transactionRmm = (db as IDBDatabase).transaction([storeName], 'readwrite')
       const objectStore = transactionRmm.objectStore(storeName)
-      const request = objectStore.delete(id)
+      objectStore.delete(id)
       const _this = this
       transactionRmm.oncomplete = (e) => {
         _this.removeProd(id)

@@ -21,19 +21,26 @@
       div.mx-3.sm-6.ph-2.form-include__box
         button(type="submit") Adicionar
 </template>
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue';
 import { useProductStore } from '~/stores/list';
 import { storeToRefs } from 'pinia';
+import type { Product, showDuplicidadePayload } from '@/types/product'
 
-const emit = defineEmits(['show-duplicity']);
+//const emit = defineEmits(['show-duplicity']);
+const emit = defineEmits<{
+  (
+    e: 'show-duplicity',
+    payload: showDuplicidadePayload
+  ): void;
+}>();
 
 const stores = useProductStore();
 
-const nome = ref('');
-const quantidade = ref(1);
+const nome = ref<string>('');
+const quantidade = ref<number>(1);
 
-const listProdutcts = ref([
+const listProdutcts = ref<string[]>([
   "Absorvente",
   "Água oxigenada",
   "Água Sanitária",
@@ -150,8 +157,8 @@ const listProdutcts = ref([
   "Yogurte natural"
 ]);
 
-const addProduct = () => {
-  let prodAdd = {
+const addProduct = () : void => {
+  let prodAdd : Partial<Product> = {
     nome: nome.value,
     quantidade: +quantidade.value,
     preco: 0,
@@ -159,7 +166,7 @@ const addProduct = () => {
     pego: false,
   }
 
-  const nameNewProd = prodAdd.nome.toLowerCase()
+  const nameNewProd = prodAdd.nome!.toLowerCase()
   const productsList = stores.products
   const hastThisProd = productsList.findIndex((prod) => prod.nome.toLowerCase() === nameNewProd)
 
@@ -169,7 +176,7 @@ const addProduct = () => {
   if (hastThisProd < 0) {
     const newId = productsList.length + 1
     prodAdd.id = newId
-    stores.action_addProduct( prodAdd )
+    stores.action_addProduct( prodAdd as Product );
     
   } else {
     handleDuplicity(hastThisProd, productsList[hastThisProd].nome, +productsList[hastThisProd].quantidade)
@@ -177,7 +184,7 @@ const addProduct = () => {
 
 }
 
-const handleDuplicity = (currentArray, prodNome, prodQtd) => {
+const handleDuplicity = (currentArray: number, prodNome: string, prodQtd: number) : void => {
   emit('show-duplicity', {
     currentArray,
     prodNome,

@@ -1,17 +1,18 @@
-<script setup>
+<script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue';
 import { useProductStore } from '@/stores/list';
 import { storeToRefs } from 'pinia';
 import IncludeItem from './IncludeItem.vue';
 import ModalDuplicidade from './ModalDuplicidade.vue';
+import type { Product, changeQtdPayload } from '@/types/product';
 
-const duplicidade = ref("");
-const order = ref("default");
+const duplicidade = ref<string>("");
+const order = ref<'default' | 'nameAsc' | 'nameDesc' | 'priceAsc' | 'priceDesc' | 'qtdAsc' | 'qtdDesc'>("default");
 
 const stores = useProductStore();
 const { products } = storeToRefs(stores);
 
-const totalvalor = computed(() => {
+const totalvalor = computed<string>(() => {
   let totalproduto = products.value.map((product) => +product.valortotal)
   let total = totalproduto.length > 0 ? totalproduto.reduce((total, num) => total + num) : 0
 
@@ -21,7 +22,7 @@ const totalvalor = computed(() => {
   });
 })
 
-const orderByNameAsc = (arrProd) => {
+const orderByNameAsc = (arrProd: Product[]): Product[] => {
   const prodNameAsc = arrProd.sort((a, b) => {
     const nameA = a.nome.toLowerCase();
     const nameB = b.nome.toLowerCase();
@@ -30,29 +31,29 @@ const orderByNameAsc = (arrProd) => {
   return prodNameAsc;
 }
 
-const orderByNameDesc = (arrProd) => {
+const orderByNameDesc = (arrProd: Product[]): Product[] => {
   return orderByNameAsc(arrProd).reverse();
 }
 
-const orderBypriceAsc = (arrProd) => {
+const orderBypriceAsc = (arrProd: Product[]): Product[] => {
   const prodPriceAsc = arrProd.sort((a, b) => a.preco - b.preco);
   return prodPriceAsc;
 }
 
-const orderBypriceDesc = (arrProd) => {
+const orderBypriceDesc = (arrProd: Product[]): Product[] => {
   return orderBypriceAsc(arrProd).reverse();
 }
 
-const orderByQtdAsc = (arrProd) => {
+const orderByQtdAsc = (arrProd: Product[]): Product[] => {
   const prodQtdAsc = arrProd.sort((a, b) => a.quantidade - b.quantidade);
   return prodQtdAsc;
 }
 
-const orderByQtdDesc = (arrProd) => {
+const orderByQtdDesc = (arrProd: Product[]): Product[] => {
   return orderByQtdAsc(arrProd).reverse();
 }
 
-const returnOrder = (arrProd) => {
+const returnOrder = (arrProd: Product[]): Product[] => {
   switch (order.value) {
     case "nameAsc":
       return orderByNameAsc(arrProd);
@@ -71,17 +72,17 @@ const returnOrder = (arrProd) => {
   }
 }
 
-const produtosNaoPego = computed(() => {
+const produtosNaoPego = computed<Product[]>(() => {
   const naoPegos = products.value.filter((p) => !p.pego);
   return returnOrder(naoPegos);
 })
 
-const produtosPego = computed(() => {
+const produtosPego = computed<Product[]>(() => {
   const prodsPegos = products.value.filter((p) => p.pego);
   return returnOrder(prodsPegos);
 })
 
-const totalReal = (value) => {
+const totalReal = (value: number | string): string => {
   const coin = +value;
   return coin.toLocaleString("pt-br", {
     style: "currency",
@@ -89,20 +90,21 @@ const totalReal = (value) => {
   });
 }
 
-const hasDuplicity = (duplicity) => {
+const hasDuplicity = (duplicity: string) : void => {
   duplicidade.value = duplicity;
   navigator.vibrate(400);
 }
 
-const removeProduct = (product) => {
+const removeProduct = (product: Product): void => {
   const { id } = product
   console.log({ product })
   stores.actions_removeProd(id)
   duplicidade.value = ''
 }
 
-const updateProductQtd = ( e ) => {
-  const { value, dataset } = e.target;
+const updateProductQtd = ( e: Event ) : void => {
+  const target = e.target as HTMLInputElement;
+  const { value, dataset } = target;
   const idProd = +dataset.idProduct;
 
   stores.action_editQtdProd({
@@ -111,8 +113,9 @@ const updateProductQtd = ( e ) => {
   })
 }
 
-const updateProductPrice = ( e ) => {
-  const { value, dataset } = e.target;
+const updateProductPrice = ( e: Event ) : void => {
+  const target = e.target as HTMLInputElement;
+  const { value, dataset } = target;
   const idProd = +dataset.idProduct;
 
   stores.action_editPriceProd({
@@ -121,7 +124,7 @@ const updateProductPrice = ( e ) => {
   })
 }
 
-const changeStatusProd = (product) => {
+const changeStatusProd = (product : Product) : void => {
   const { id, pego } = product;
   const changePego = !pego;
 
@@ -131,12 +134,11 @@ const changeStatusProd = (product) => {
   })
 }
 
-const fecharModalDuplicidade = (change) => {
+const fecharModalDuplicidade = (change: changeQtdPayload) : void => {
   let newQtd = change.newQtd;
   let currentArray = change.currentArray;
   let qtdAtual = +stores.products[currentArray].quantidade;
-  console.log({ newQtd, qtdAtual })
-
+  
   if(newQtd != qtdAtual) {
     stores.action_editQtdProd({
       id: stores.products[currentArray].id,

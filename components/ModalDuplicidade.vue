@@ -1,40 +1,42 @@
-<script setup>
+<script lang="ts" setup>
 import { ref, toRefs } from 'vue'
 import { useProductStore } from '~/stores/list'
 import { storeToRefs } from 'pinia';
+import type { Product, DuplicidadeData, AlterQtdPayload } from '@/types/product'
 
 
-const props = defineProps({
-  duplicidade: {
-    type: Object,
-    default: () => ({})
-  }
-})
+const props = defineProps<{
+  duplicidade: DuplicidadeData
+}>()
 
 
-const emit = defineEmits(['alter-qtd', 'remove-modal'])
+//const emit = defineEmits(['alter-qtd', 'remove-modal'])
+const emit = defineEmits<{
+  (e: 'alter-qtd', payload: AlterQtdPayload): void
+  (e: 'remove-modal', product: Product): void
+}>()
 const store = useProductStore();
 const { products } = storeToRefs(store);
 
 // Inicializando o valor de newQtd
 const { duplicidade } = toRefs(props)
-const newQtd = ref(duplicidade.value.prodQtd || 1)
+const newQtd = ref<number>(duplicidade.value.prodQtd || 1)
 
 // Funções para manipulação de quantidade
-const acrescentar = () => {
+const acrescentar = (): void => {
   newQtd.value += 1
 }
 
-const reduzir = () => {
+const reduzir = (): void => {
   if (newQtd.value > 1) newQtd.value -= 1
 }
 
-const min = () => {
+const min = () : void => {
   if (newQtd.value < 1) newQtd.value = 1
 }
 
 // Função para salvar quantidade
-const salvar = () => {
+const salvar = () : void => {
   emit('alter-qtd', {
     newQtd: newQtd.value,
     prodQtd: duplicidade.value.prodQtd,
@@ -43,10 +45,9 @@ const salvar = () => {
 }
 
 // Função para remover produto
-const remover = () => {
+const remover = () : void => {
   const indexProd = duplicidade.value.currentArray
   const product = products.value[indexProd]
-  console.log({ product, indexProd })
   emit('remove-modal', product)
 }
 

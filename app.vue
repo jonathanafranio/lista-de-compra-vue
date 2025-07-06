@@ -5,7 +5,7 @@
     ListaProdutos
 </template>
   
-<script setup lang="js">
+<script setup lang="ts">
   import ListaProdutos from '~/components/ListaProdutos.vue'
   import imgMercado from '~/assets/mercado.jpg'
 </script>
