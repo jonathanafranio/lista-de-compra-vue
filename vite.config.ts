@@ -1,4 +1,3 @@
-// vite.config.js ou vite.config.ts
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue'; // Importando o plugin Vue
 import { fileURLToPath, URL } from 'url';
@@ -8,6 +7,7 @@ export default defineConfig({
   test: {
     globals: true, // Permite usar funções globais como `describe` e `it`
     environment: 'jsdom', // Configura o ambiente de testes para simular um navegador
+    setupFiles: ['./vitest.setup.ts']
   },
   resolve: {
     alias: {

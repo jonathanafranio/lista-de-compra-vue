@@ -5,6 +5,7 @@ import ListaProdutos from '@/components/ListaProdutos.vue';
 import { useProductStore } from '~/stores/list';
 import 'fake-indexeddb/auto'; // Importa o mock do IndexedDB
 import { openDB } from 'idb'; // Importa a função openDB da biblioteca idb
+import type { Product } from '@/types/product';
 
 describe('ListaProdutos.vue', () => {
     beforeEach(async () => {
@@ -18,7 +19,7 @@ describe('ListaProdutos.vue', () => {
             },
         });
 
-        const fosforo = {
+        const fosforo: Product = {
             id: 1,
             nome: "Fósforo",
             quantidade: 10,
@@ -27,8 +28,8 @@ describe('ListaProdutos.vue', () => {
             pego: false
         }
 
-        const caderno = {
-            id: 1,
+        const caderno: Product = {
+            id: 2,
             nome: "Caderno",
             quantidade: 1,
             preco: 11.50,
